@@ -8,17 +8,23 @@ let cacheDb = null;
 */
 module.exports = (context, callback) => {
   let name = context.params.name;
-  if (!name) {
-    return callback('error');
+  let email = context.params.email;
+
+  if (!name || !email) {
+    return callback({ message: 'Cannot Register' });
+  }
+
+  if (email.indexOf('@frontmen.nl') === -1) {
+    return callback({ message: 'Cannot Register' });
   }
 
   let user = {
     name: name,
     score: 1500,
+    email,
   };
 
   return connectDb(db => createUser(db, user, callback));
-
 };
 
 const createUser = (db, user, callback) => {

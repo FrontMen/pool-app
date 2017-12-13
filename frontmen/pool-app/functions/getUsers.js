@@ -2,19 +2,16 @@ const connectDb = require('../src/connectDb');
 
 module.exports = (callback) => {
   try {
-    return getUsers(callback);
+    return connectDb(db => getUsers(db, callback));
   } catch (error) {
     return callback(error);
   }
 };
 
-const getUsers = callback => {
+const getUsers = (db, callback) => {
   connectDb(db => {
-    return (err, docs) => {
-      if (err) throw new Error(err);
-      return db.collection('users').find().toArray((err, docs) => {
-        return callback(err, docs);
-      });
-    };
+    return db.collection('users').find().toArray((err, docs) => {
+      return callback(err, docs);
+    });
   });
 };
