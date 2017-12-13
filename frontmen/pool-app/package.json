@@ -4,7 +4,12 @@
   "description": "",
   "author": "frontmen <albert@frontmen.com>",
   "main": "functions/__main__.js",
-  "dependencies": {},
+  "dependencies": {
+    "ejs": "^2.5.7",
+    "elo-rank": "^1.0.3",
+    "mime": "^2.0.3",
+    "mongodb": "^3.0.0-rc0"
+  },
   "private": true,
   "stdlib": {
     "build": "faaslang",
