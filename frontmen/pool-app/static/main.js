@@ -17694,7 +17694,7 @@ exports.Game = function (_a) {
                     players
                         .filter(function (p) { return p.name !== game.player1; })
                         .map(function (p) { return hyperapp_1.h("option", { value: p.name }, p.name); }))),
-            hyperapp_1.h("div", { class: "col-12" },
+            hyperapp_1.h("div", { class: "col-xs-12" },
                 hyperapp_1.h("input", { type: "submit", value: "play!", class: "btn btn-block btn-lg btn-primary" })))));
 };
 var FancyRadio = function (_a) {
