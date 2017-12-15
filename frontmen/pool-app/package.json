@@ -5,7 +5,7 @@
   "author": "frontmen <albert@frontmen.com>",
   "main": "f/main/index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=production concurrently \"node app/fuse\" \"lib http\" "
+    "start": "cross-env NODE_ENV=production concurrently webpack \"lib http\""
   },
   "dependencies": {
     "@types/debug": "0.0.30",

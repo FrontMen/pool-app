@@ -1,5 +1,7 @@
+
 module.exports = {
-  entry: './app/src/index.ts',
+  entry: './app/src/index.tsx',
+  watch: true,
   output: {
     filename: 'main.js',
     path: __dirname + '/static',
