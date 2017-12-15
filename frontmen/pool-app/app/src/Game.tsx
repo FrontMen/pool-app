@@ -39,7 +39,7 @@ export const Game = ({
             .map(p => <option value={p.name}>{p.name}</option>)}
         </select>
       </div>
-      <div class="col-12">
+      <div class="col-xs-12">
         <input
           type="submit"
           value="play!"
