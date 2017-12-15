@@ -1,14 +1,12 @@
 import { app, h } from 'hyperapp';
 import * as _debug from 'debug';
-import { reject } from 'lodash';
+import { orderBy } from 'lodash';
 
 // Types
 import { Overview } from './Overview';
 import { Game } from './Game';
 import { ReduxDevTools } from './application/ReduxDevTools';
 import { Messages } from './Messages';
-
-// API
 
 // Views & Actions
 const appActions = app(
@@ -33,7 +31,7 @@ const appActions = app(
           actions.fetchGames();
         });
       },
-      setPlayers: players => ({ players }),
+      setPlayers: players => ({ players: orderBy(players, ['score'], ['desc']) }),
       gameFormChange: payload => {
         return {
           game: {
@@ -58,7 +56,7 @@ const appActions = app(
         default:
           return (
             <div>
-              <ReduxDevTools state={state} />
+              {ReduxDevTools({ state })}
               {Overview({ state, actions })}
               {Game({
                 players: state.players,
