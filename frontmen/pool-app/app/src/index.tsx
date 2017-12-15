@@ -12,11 +12,23 @@ import { ReduxDevTools } from './application/ReduxDevTools';
 const appActions = app(
   {
     actions: {
-      init: () => ({ players: [] }),
+      init: () => ({
+        players: [],
+        game: { player1: '', win: false, player2: '' },
+      }),
       fetchGames: _ => state => actions => {
         fetch('getUsers')
           .then(response => response.json())
           .then(actions.setPlayers);
+      },
+      postGame: game => state => actions => {
+        fetch(
+          `playGame?player1=${game.player1}&win=${game.win}&player2=${game.player2}`
+        ).then(response => {
+          if (!response.ok) throw new Error('error in postGame');
+
+          actions.fetchGames();
+        });
       },
       setPlayers: players => ({ players }),
       gameFormChange: payload => {
@@ -39,6 +51,7 @@ const appActions = app(
               {Game({
                 players: state.players,
                 gameFormChange: actions.gameFormChange,
+                game: state.game,
               })}
             </div>
           );
