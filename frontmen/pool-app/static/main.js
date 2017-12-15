@@ -17631,13 +17631,17 @@ exports.Overview = function (_a) {
 exports.List = function (_a) {
     var players = _a.players;
     return (hyperapp_1.h("ul", { class: "list-group" },
-        players.map(function (p) { return (hyperapp_1.h("li", { class: "list-group-item justify-content-between" },
+        players.map(function (p, idx) { return (hyperapp_1.h("li", { class: "list-group-item d-flex justify-content-between align-items-center" },
             p.name,
-            hyperapp_1.h("span", { class: "badge badge-warning badge-pill" }, p.score))); }),
+            hyperapp_1.h("span", { class: getBadgeClass(idx) }, p.score))); }),
         hyperapp_1.h("li", null,
             hyperapp_1.h("form", null,
                 hyperapp_1.h("input", { name: "name", class: "form-control" })),
             hyperapp_1.h("button", null))));
+};
+var getBadgeClass = function (idx) {
+    debugger;
+    return "badge " + (idx === 0 ? 'badge-warning' : 'badge-info');
 };
 
 

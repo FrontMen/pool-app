@@ -11,10 +11,10 @@ export const Overview = ({ state, actions }) => (
 
 export const List = ({ players }) => (
   <ul class="list-group">
-    {players.map(p => (
-      <li class="list-group-item justify-content-between">
+    {players.map((p, idx) => (
+      <li class="list-group-item d-flex justify-content-between align-items-center">
         {p.name}
-        <span class="badge badge-warning badge-pill">{p.score}</span>
+        <span class={getBadgeClass(idx)}>{p.score}</span>
       </li>
     ))}
     <li>
@@ -25,3 +25,9 @@ export const List = ({ players }) => (
     </li>
   </ul>
 );
+
+const getBadgeClass = idx => {
+  debugger;
+
+  return `badge ${idx === 0 ? 'badge-warning' : 'badge-info'}`;
+};
