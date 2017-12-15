@@ -8,9 +8,9 @@ export const Overview = ({ state, actions }) => (
 );
 
 export const List = ({ players }) => (
-  <ul>
+  <ul class="list-group">
     {players.map(p => (
-      <li>
+      <li class="list-group-item">
         {p.name}, {p.score}
       </li>
     ))}

@@ -467,7 +467,7 @@ exports.Overview = function (_a) {
 };
 exports.List = function (_a) {
     var players = _a.players;
-    return (hyperapp_1.h("ul", null, players.map(function (p) { return (hyperapp_1.h("li", null,
+    return (hyperapp_1.h("ul", { class: "list-group" }, players.map(function (p) { return (hyperapp_1.h("li", { class: "list-group-item" },
         p.name,
         ", ",
         p.score)); })));
@@ -484,29 +484,35 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var hyperapp_1 = __webpack_require__(0);
 exports.Game = function (_a) {
     var players = _a.players, gameFormChange = _a.gameFormChange, game = _a.game;
-    return (hyperapp_1.h("div", null,
+    return (hyperapp_1.h("div", { class: "row" },
         hyperapp_1.h("form", { onchange: gameFormChange },
-            hyperapp_1.h("label", null,
-                "Afstootert",
-                ' ',
-                hyperapp_1.h("select", { name: "player" },
-                    hyperapp_1.h("option", { disabled: true, selected: !game.player1 || !game.player1.name }, "Selecteer"),
-                    players.map(function (p) { return hyperapp_1.h("option", { value: p.name }, p.name); }))),
-            hyperapp_1.h("label", null,
-                hyperapp_1.h("input", { type: "radio", name: "win", value: "win" }),
-                "wint van",
-                ' '),
-            hyperapp_1.h("label", null,
-                hyperapp_1.h("input", { type: "radio", name: "win", value: "loose" }),
-                "verliest van",
-                ' '),
-            hyperapp_1.h("label", null,
-                "Tegenstander",
-                hyperapp_1.h("select", { name: "opponent" },
-                    hyperapp_1.h("option", { disabled: true, selected: !game.player2 || !game.player2.name }, "Selecteer"),
-                    players
-                        .filter(function (p) { return p.name !== game.player1; })
-                        .map(function (p) { return hyperapp_1.h("option", { value: p.name }, p.name); }))))));
+            hyperapp_1.h("div", { class: "col-xs-3" },
+                hyperapp_1.h("label", null,
+                    "Afstootert",
+                    ' ',
+                    hyperapp_1.h("select", { name: "player" },
+                        hyperapp_1.h("option", { disabled: true, selected: !game.player1 || !game.player1.name }, "Selecteer"),
+                        players.map(function (p) { return hyperapp_1.h("option", { value: p.name }, p.name); })))),
+            hyperapp_1.h("div", { class: "col-xs-3" },
+                hyperapp_1.h(FancyRadio, { name: "win", value: "win", label: "wint van" }),
+                hyperapp_1.h(FancyRadio, { name: "win", value: "loose", label: "verliest van" })),
+            hyperapp_1.h("div", { class: "col-xs-3" },
+                hyperapp_1.h("label", null,
+                    "Tegenstander",
+                    hyperapp_1.h("select", { name: "opponent" },
+                        hyperapp_1.h("option", { disabled: true, selected: !game.player2 || !game.player2.name }, "Selecteer"),
+                        players
+                            .filter(function (p) { return p.name !== game.player1; })
+                            .map(function (p) { return hyperapp_1.h("option", { value: p.name }, p.name); })))))));
+};
+var FancyRadio = function (_a) {
+    var name = _a.name, value = _a.value, label = _a.label;
+    return (hyperapp_1.h("label", { class: "radio" },
+        hyperapp_1.h("input", { type: "radio", name: name, value: value, "data-toggle": "radio", class: "custom-radio" }),
+        hyperapp_1.h("span", { class: "icons" },
+            hyperapp_1.h("span", { class: "icon-unchecked" }),
+            hyperapp_1.h("span", { class: "icon-checked" })),
+        label));
 };
 
 
