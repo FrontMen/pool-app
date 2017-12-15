@@ -17,5 +17,11 @@ export const List = ({ players }) => (
         <span class="badge badge-warning badge-pill">{p.score}</span>
       </li>
     ))}
+    <li>
+      <form>
+        <input name="name" class="form-control" />
+      </form>
+      <button />
+    </li>
   </ul>
 );
