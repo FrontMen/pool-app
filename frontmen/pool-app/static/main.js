@@ -402,23 +402,26 @@ var hyperapp_1 = __webpack_require__(0);
 var Overview_1 = __webpack_require__(2);
 var Game_1 = __webpack_require__(3);
 var ReduxDevTools_1 = __webpack_require__(4);
+var Messages_1 = __webpack_require__(9);
 // API
 // Views & Actions
 var appActions = hyperapp_1.app({
     actions: {
         init: function () { return ({
             players: [],
-            game: { player1: '', win: false, player2: '' },
+            game: { player1: '', win: '', player2: '' },
+            messages: [],
         }); },
         fetchGames: function (_) { return function (state) { return function (actions) {
-            fetch('getUsers')
+            fetch('getUsers/')
                 .then(function (response) { return response.json(); })
                 .then(actions.setPlayers);
         }; }; },
-        postGame: function (game) { return function (state) { return function (actions) {
-            fetch("playGame?player1=" + game.player1 + "&win=" + game.win + "&player2=" + game.player2).then(function (response) {
+        gameFormSubmit: function (game) { return function (state) { return function (actions) {
+            fetch("playGame/?player1=" + game.player1 + "&win=" + game.win + "&player2=" + game.player2).then(function (response) {
                 if (!response.ok)
                     throw new Error('error in postGame');
+                response.text().then(function (t) { return actions.setMessage(t); });
                 actions.fetchGames();
             });
         }; }; },
@@ -432,6 +435,15 @@ var appActions = hyperapp_1.app({
                 },
             };
         },
+        setMessage: function (message) { return function (state) { return function (actions) {
+            setTimeout(function () {
+                actions.removeMessage(message);
+            }, 10000);
+            return { messages: state.messages.concat([message]) };
+        }; }; },
+        removeMessage: function (message) { return function (state) { return ({
+            messages: state.messages.filter(function (m) { return m !== message; }),
+        }); }; },
     },
     view: function (state) { return function (actions) {
         switch (state.view) {
@@ -443,7 +455,10 @@ var appActions = hyperapp_1.app({
                         players: state.players,
                         gameFormChange: actions.gameFormChange,
                         game: state.game,
-                    })));
+                        gameFormSubmit: actions.gameFormSubmit,
+                        setMessage: actions.setMessage,
+                    }),
+                    Messages_1.Messages({ messages: state.messages })));
         }
     }; },
 }, document.getElementById('app'));
@@ -483,9 +498,12 @@ exports.List = function (_a) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var hyperapp_1 = __webpack_require__(0);
 exports.Game = function (_a) {
-    var players = _a.players, gameFormChange = _a.gameFormChange, game = _a.game;
+    var players = _a.players, gameFormChange = _a.gameFormChange, game = _a.game, gameFormSubmit = _a.gameFormSubmit, setMessage = _a.setMessage;
     return (hyperapp_1.h("div", { class: "row" },
-        hyperapp_1.h("form", { onchange: gameFormChange },
+        hyperapp_1.h("form", { onchange: gameFormChange, onsubmit: function (e) {
+                e.preventDefault();
+                gameFormSubmit(game);
+            } },
             hyperapp_1.h("div", { class: "col-xs-3" },
                 hyperapp_1.h("label", { for: "playerSelect" }, "Speler"),
                 hyperapp_1.h("select", { id: "playerSelect", name: "player", class: "form-control" },
@@ -500,7 +518,8 @@ exports.Game = function (_a) {
                     hyperapp_1.h("option", { disabled: true, selected: !game.player2 || !game.player2.name }, "Selecteer"),
                     players
                         .filter(function (p) { return p.name !== game.player1; })
-                        .map(function (p) { return hyperapp_1.h("option", { value: p.name }, p.name); }))))));
+                        .map(function (p) { return hyperapp_1.h("option", { value: p.name }, p.name); }))),
+            hyperapp_1.h("input", { type: "submit", value: "play!" }))));
 };
 var FancyRadio = function (_a) {
     var name = _a.name, value = _a.value, label = _a.label;
@@ -1326,6 +1345,20 @@ function plural(ms, n, name) {
   }
   return Math.ceil(ms / n) + ' ' + name + 's';
 }
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var hyperapp_1 = __webpack_require__(0);
+exports.Messages = function (_a) {
+    var messages = _a.messages;
+    return hyperapp_1.h("ul", null, messages.map(function (m) { return hyperapp_1.h("li", null, m); }));
+};
 
 
 /***/ })

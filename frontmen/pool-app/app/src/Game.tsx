@@ -1,8 +1,20 @@
 import { h } from 'hyperapp';
 
-export const Game = ({ players, gameFormChange, game }) => (
+export const Game = ({
+  players,
+  gameFormChange,
+  game,
+  gameFormSubmit,
+  setMessage,
+}) => (
   <div class="row">
-    <form onchange={gameFormChange}>
+    <form
+      onchange={gameFormChange}
+      onsubmit={e => {
+        e.preventDefault();
+        gameFormSubmit(game);
+      }}
+    >
       <div class="col-xs-3">
         <label for="playerSelect">Speler</label>
         <select id="playerSelect" name="player" class="form-control">
@@ -27,6 +39,7 @@ export const Game = ({ players, gameFormChange, game }) => (
             .map(p => <option value={p.name}>{p.name}</option>)}
         </select>
       </div>
+      <input type="submit" value="play!" />
     </form>
   </div>
 );

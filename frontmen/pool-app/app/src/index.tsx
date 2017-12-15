@@ -1,10 +1,12 @@
 import { app, h } from 'hyperapp';
 import * as _debug from 'debug';
+import { reject } from 'lodash';
 
 // Types
 import { Overview } from './Overview';
 import { Game } from './Game';
 import { ReduxDevTools } from './application/ReduxDevTools';
+import { Messages } from './Messages';
 
 // API
 
@@ -14,19 +16,20 @@ const appActions = app(
     actions: {
       init: () => ({
         players: [],
-        game: { player1: '', win: false, player2: '' },
+        game: { player1: '', win: '', player2: '' },
+        messages: [],
       }),
       fetchGames: _ => state => actions => {
-        fetch('getUsers')
+        fetch('getUsers/')
           .then(response => response.json())
           .then(actions.setPlayers);
       },
-      postGame: game => state => actions => {
+      gameFormSubmit: game => state => actions => {
         fetch(
-          `playGame?player1=${game.player1}&win=${game.win}&player2=${game.player2}`
+          `playGame/?player1=${game.player1}&win=${game.win}&player2=${game.player2}`
         ).then(response => {
           if (!response.ok) throw new Error('error in postGame');
-
+          response.text().then(t => actions.setMessage(t));
           actions.fetchGames();
         });
       },
@@ -40,6 +43,15 @@ const appActions = app(
           },
         };
       },
+      setMessage: message => state => actions => {
+        setTimeout(() => {
+          actions.removeMessage(message);
+        }, 10000);
+        return { messages: [...state.messages, message] };
+      },
+      removeMessage: message => state => ({
+        messages: state.messages.filter(m => m !== message),
+      }),
     },
     view: (state: any) => (actions: any) => {
       switch (state.view) {
@@ -52,7 +64,10 @@ const appActions = app(
                 players: state.players,
                 gameFormChange: actions.gameFormChange,
                 game: state.game,
+                gameFormSubmit: actions.gameFormSubmit,
+                setMessage: actions.setMessage,
               })}
+              {Messages({ messages: state.messages })}
             </div>
           );
       }
