@@ -16,6 +16,7 @@ export const Game = ({
       }}
     >
       <div class="col-xs-12">
+        <h3>Game</h3>
         <label for="playerSelect">Speler</label>
         <select id="playerSelect" name="player" class="form-control">
           <option disabled selected={!game.player1 || !game.player1.name}>

@@ -468,6 +468,7 @@ var appActions = hyperapp_1.app({
         switch (state.view) {
             default:
                 return (hyperapp_1.h("div", null,
+                    hyperapp_1.h("h1", null, "FrontMen Pool Cafe"),
                     ReduxDevTools_1.ReduxDevTools({ state: state }),
                     Overview_1.Overview({ state: state, actions: actions }),
                     Game_1.Game({
@@ -17644,7 +17645,7 @@ exports.Overview = function (_a) {
     var state = _a.state, actions = _a.actions;
     return (hyperapp_1.h("div", { class: "row" },
         hyperapp_1.h("div", { class: "col-lg-6" },
-            hyperapp_1.h("h1", null, "Ranking"),
+            hyperapp_1.h("h3", null, "Ranking"),
             hyperapp_1.h(exports.List, { players: state.players, newUser: state.newUser, newUserFormChange: actions.newUserFormChange, newUserFormSubmit: actions.newUserFormSubmit }))));
 };
 exports.List = function (_a) {
@@ -17680,6 +17681,7 @@ exports.Game = function (_a) {
                 gameFormSubmit(game);
             } },
             hyperapp_1.h("div", { class: "col-xs-12" },
+                hyperapp_1.h("h3", null, "Game"),
                 hyperapp_1.h("label", { for: "playerSelect" }, "Speler"),
                 hyperapp_1.h("select", { id: "playerSelect", name: "player", class: "form-control" },
                     hyperapp_1.h("option", { disabled: true, selected: !game.player1 || !game.player1.name }, "Selecteer"),

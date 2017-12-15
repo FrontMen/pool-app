@@ -3,7 +3,7 @@ import { h } from 'hyperapp';
 export const Overview = ({ state, actions }) => (
   <div class="row">
     <div class="col-lg-6">
-      <h1>Ranking</h1>
+      <h3>Ranking</h3>
       <List
         players={state.players}
         newUser={state.newUser}

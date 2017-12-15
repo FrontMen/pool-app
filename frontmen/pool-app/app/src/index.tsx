@@ -76,6 +76,7 @@ const appActions = app(
         default:
           return (
             <div>
+              <h1>FrontMen Pool Cafe</h1>
               {ReduxDevTools({ state })}
               {Overview({ state, actions })}
               {Game({
