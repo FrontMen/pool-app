@@ -15,7 +15,7 @@ export const Game = ({
         gameFormSubmit(game);
       }}
     >
-      <div class="col-xs-3">
+      <div class="col-xs-12">
         <label for="playerSelect">Speler</label>
         <select id="playerSelect" name="player" class="form-control">
           <option disabled selected={!game.player1 || !game.player1.name}>
@@ -24,11 +24,11 @@ export const Game = ({
           {players.map(p => <option value={p.name}>{p.name}</option>)}
         </select>
       </div>
-      <div class="col-xs-3">
+      <div class="col-xs-12">
         <FancyRadio name="win" value="win" label="wint van" />
         <FancyRadio name="win" value="loose" label="verliest van" />
       </div>
-      <div class="col-xs-3">
+      <div class="col-xs-12">
         <label for="opponentSelect">Tegenstander</label>
         <select id="opponentSelect" name="opponent" class="form-control">
           <option disabled selected={!game.player2 || !game.player2.name}>
@@ -39,7 +39,13 @@ export const Game = ({
             .map(p => <option value={p.name}>{p.name}</option>)}
         </select>
       </div>
-      <input type="submit" value="play!" />
+      <div class="col-12">
+        <input
+          type="submit"
+          value="play!"
+          class="btn btn-block btn-lg btn-primary"
+        />
+      </div>
     </form>
   </div>
 );

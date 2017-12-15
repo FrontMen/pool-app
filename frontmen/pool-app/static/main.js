@@ -504,22 +504,23 @@ exports.Game = function (_a) {
                 e.preventDefault();
                 gameFormSubmit(game);
             } },
-            hyperapp_1.h("div", { class: "col-xs-3" },
+            hyperapp_1.h("div", { class: "col-xs-12" },
                 hyperapp_1.h("label", { for: "playerSelect" }, "Speler"),
                 hyperapp_1.h("select", { id: "playerSelect", name: "player", class: "form-control" },
                     hyperapp_1.h("option", { disabled: true, selected: !game.player1 || !game.player1.name }, "Selecteer"),
                     players.map(function (p) { return hyperapp_1.h("option", { value: p.name }, p.name); }))),
-            hyperapp_1.h("div", { class: "col-xs-3" },
+            hyperapp_1.h("div", { class: "col-xs-12" },
                 hyperapp_1.h(FancyRadio, { name: "win", value: "win", label: "wint van" }),
                 hyperapp_1.h(FancyRadio, { name: "win", value: "loose", label: "verliest van" })),
-            hyperapp_1.h("div", { class: "col-xs-3" },
+            hyperapp_1.h("div", { class: "col-xs-12" },
                 hyperapp_1.h("label", { for: "opponentSelect" }, "Tegenstander"),
                 hyperapp_1.h("select", { id: "opponentSelect", name: "opponent", class: "form-control" },
                     hyperapp_1.h("option", { disabled: true, selected: !game.player2 || !game.player2.name }, "Selecteer"),
                     players
                         .filter(function (p) { return p.name !== game.player1; })
                         .map(function (p) { return hyperapp_1.h("option", { value: p.name }, p.name); }))),
-            hyperapp_1.h("input", { type: "submit", value: "play!" }))));
+            hyperapp_1.h("div", { class: "col-12" },
+                hyperapp_1.h("input", { type: "submit", value: "play!", class: "btn btn-block btn-lg btn-primary" })))));
 };
 var FancyRadio = function (_a) {
     var name = _a.name, value = _a.value, label = _a.label;
