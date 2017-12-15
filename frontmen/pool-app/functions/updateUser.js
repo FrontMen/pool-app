@@ -1,5 +1,5 @@
 const ObjectID = require('mongodb').ObjectID;
-const connectDb = require('../src/connectDb');
+const connectDb = require('../lib/connectDb');
 
 let cache = null;
 /**

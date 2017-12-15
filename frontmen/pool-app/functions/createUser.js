@@ -1,5 +1,5 @@
 const MongoClient = require('mongodb').MongoClient;
-const connectDb = require('../src/connectDb');
+const connectDb = require('../lib/connectDb');
 
 let cacheDb = null;
 

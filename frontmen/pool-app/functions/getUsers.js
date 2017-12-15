@@ -1,4 +1,4 @@
-const connectDb = require('../src/connectDb');
+const connectDb = require('../lib/connectDb');
 
 module.exports = (callback) => {
   try {

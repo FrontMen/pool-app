@@ -1,6 +1,6 @@
 //@ts-check
 const ObjectID = require('mongodb').ObjectID;
-const connectDb = require('../src/connectDb');
+const connectDb = require('../lib/connectDb');
 const EloRank = require('elo-rank');
 var elo = new EloRank();
 
@@ -26,7 +26,7 @@ const playGame = (db, player1, win, player2, callback) => {
         }
         // calculate new scores
         const newScores = calculateNewElo($player1.score, win, $player2.score);
-
+        const matchId = new ObjectID();
         // save match
         // save new score
         db.collection('users').updateOne({ _id: new ObjectID($player1._id) }, {
@@ -38,6 +38,7 @@ const playGame = (db, player1, win, player2, callback) => {
               opponent: $player2,
               playerScore: newScores.p1score,
               oppScore: newScores.p2score,
+              matchId
             }),
           },
         }, (err, result) => {
@@ -55,6 +56,7 @@ const playGame = (db, player1, win, player2, callback) => {
               opponent: $player1,
               playerScore: newScores.p2score,
               oppScore: newScores.p1score,
+              matchId
             }),
           },
         }, (err, result) => {
@@ -76,8 +78,9 @@ var calculateNewElo = (p1score, win, p2score) => {
   return { p1score, p2score };
 };
 
-var createMatch = ({ player, win, opponent, playerScore, oppScore }) => {
+var createMatch = ({ player, win, opponent, playerScore, oppScore, matchId }) => {
   return {
+    matchId, 
     player: player._id,
     opponent: opponent._id,
     date: Date.now(),

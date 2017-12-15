@@ -3,12 +3,27 @@
   "version": "0.0.0",
   "description": "",
   "author": "frontmen <albert@frontmen.com>",
-  "main": "functions/__main__.js",
+  "main": "f/main/index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production concurrently \"node app/fuse\" \"lib http\" "
+  },
   "dependencies": {
+    "@types/debug": "0.0.30",
+    "axios": "^0.17.1",
+    "cross-env": "^5.1.1",
+    "debug": "^3.1.0",
     "ejs": "^2.5.7",
     "elo-rank": "^1.0.3",
+    "file-loader": "^0.9.0",
+    "fs-extra": "^1.0.0",
+    "fuse-box": "^2.5.0-beta.1",
+    "fuse-box-typechecker": "^2.6.3",
+    "html-loader": "^0.4.4",
+    "hyperapp": "^0.16.2",
     "mime": "^2.0.3",
-    "mongodb": "^3.0.0-rc0"
+    "mongodb": "^3.0.0-rc0",
+    "pre-push": "^0.1.1",
+    "tslint": "^5.8.0"
   },
   "private": true,
   "stdlib": {
@@ -20,5 +35,12 @@
       "keys": [],
       "user": []
     }
+  },
+  "devDependencies": {
+    "awesome-typescript-loader": "^3.4.1",
+    "source-map-loader": "^0.2.3",
+    "ts-loader": "^3.2.0",
+    "typescript": "^2.6.2",
+    "webpack": "^3.10.0"
   }
 }
