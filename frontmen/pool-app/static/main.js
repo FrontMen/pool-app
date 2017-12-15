@@ -411,6 +411,7 @@ var appActions = hyperapp_1.app({
             players: [],
             game: { player1: '', win: '', player2: '' },
             messages: [],
+            newUser: { name: '', email: '' },
         }); },
         fetchGames: function (_) { return function (state) { return function (actions) {
             fetch('getUsers/')
@@ -425,7 +426,9 @@ var appActions = hyperapp_1.app({
                 actions.fetchGames();
             });
         }; }; },
-        setPlayers: function (players) { return ({ players: lodash_1.orderBy(players, ['score'], ['desc']) }); },
+        setPlayers: function (players) { return ({
+            players: lodash_1.orderBy(players, ['score'], ['desc']),
+        }); },
         gameFormChange: function (payload) {
             return {
                 game: {
@@ -435,10 +438,26 @@ var appActions = hyperapp_1.app({
                 },
             };
         },
+        newUserFormChange: function (payload) {
+            return {
+                newUser: {
+                    name: payload.currentTarget[0].value,
+                    email: payload.currentTarget[1].value,
+                },
+            };
+        },
+        newUserFormSubmit: function (newUser) { return function (state) { return function (actions) {
+            fetch("createUser/?name=" + newUser.name + "&email=" + newUser.email).then(function (response) {
+                if (!response.ok)
+                    throw new Error('error in newUser');
+                response.text().then(function (t) { return actions.setMessage(t); });
+                actions.fetchGames();
+            });
+        }; }; },
         setMessage: function (message) { return function (state) { return function (actions) {
             setTimeout(function () {
                 actions.removeMessage(message);
-            }, 10000);
+            }, 5000);
             return { messages: state.messages.concat([message]) };
         }; }; },
         removeMessage: function (message) { return function (state) { return ({
@@ -449,6 +468,7 @@ var appActions = hyperapp_1.app({
         switch (state.view) {
             default:
                 return (hyperapp_1.h("div", null,
+                    hyperapp_1.h("h1", null, "FrontMen Pool Cafe"),
                     ReduxDevTools_1.ReduxDevTools({ state: state }),
                     Overview_1.Overview({ state: state, actions: actions }),
                     Game_1.Game({
@@ -17625,19 +17645,23 @@ exports.Overview = function (_a) {
     var state = _a.state, actions = _a.actions;
     return (hyperapp_1.h("div", { class: "row" },
         hyperapp_1.h("div", { class: "col-lg-6" },
-            hyperapp_1.h("h1", null, "Ranking"),
-            hyperapp_1.h(exports.List, { players: state.players }))));
+            hyperapp_1.h("h3", null, "Ranking"),
+            hyperapp_1.h(exports.List, { players: state.players, newUser: state.newUser, newUserFormChange: actions.newUserFormChange, newUserFormSubmit: actions.newUserFormSubmit }))));
 };
 exports.List = function (_a) {
-    var players = _a.players;
+    var players = _a.players, newUser = _a.newUser, newUserFormChange = _a.newUserFormChange, newUserFormSubmit = _a.newUserFormSubmit;
     return (hyperapp_1.h("ul", { class: "list-group" },
         players.map(function (p, idx) { return (hyperapp_1.h("li", { class: "list-group-item d-flex justify-content-between align-items-center" },
             p.name,
             hyperapp_1.h("span", { class: getBadgeClass(idx) }, p.score))); }),
-        hyperapp_1.h("li", null,
-            hyperapp_1.h("form", null,
-                hyperapp_1.h("input", { name: "name", class: "form-control" })),
-            hyperapp_1.h("button", null))));
+        hyperapp_1.h("li", { class: "list-group-item justify-content-between" },
+            hyperapp_1.h("form", { onchange: newUserFormChange, onsubmit: function (e) {
+                    e.preventDefault();
+                    newUserFormSubmit(newUser);
+                } },
+                hyperapp_1.h("input", { placeholder: "name", name: "name", class: "form-control" }),
+                hyperapp_1.h("input", { placeholder: "email", name: "email", class: "form-control" }),
+                hyperapp_1.h("input", { type: "submit", value: "+" })))));
 };
 var getBadgeClass = function (idx) {
     debugger;
@@ -17661,6 +17685,7 @@ exports.Game = function (_a) {
                 gameFormSubmit(game);
             } },
             hyperapp_1.h("div", { class: "col-xs-12" },
+                hyperapp_1.h("h3", null, "Game"),
                 hyperapp_1.h("label", { for: "playerSelect" }, "Speler"),
                 hyperapp_1.h("select", { id: "playerSelect", name: "player", class: "form-control" },
                     hyperapp_1.h("option", { disabled: true, selected: !game.player1 || !game.player1.name }, "Selecteer"),

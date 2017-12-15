@@ -11,11 +11,11 @@ module.exports = (context, callback) => {
   let email = context.params.email;
 
   if (!name || !email) {
-    return callback({ message: 'Cannot Register' });
+    return callback('', 'Cannot Register');
   }
 
   if (email.indexOf('@frontmen.nl') === -1) {
-    return callback({ message: 'Cannot Register' });
+    return callback('', 'Cannot Register');
   }
 
   let user = {

@@ -16,6 +16,7 @@ const appActions = app(
         players: [],
         game: { player1: '', win: '', player2: '' },
         messages: [],
+        newUser: { name: '', email: '' },
       }),
       fetchGames: _ => state => actions => {
         fetch('getUsers/')
@@ -31,7 +32,9 @@ const appActions = app(
           actions.fetchGames();
         });
       },
-      setPlayers: players => ({ players: orderBy(players, ['score'], ['desc']) }),
+      setPlayers: players => ({
+        players: orderBy(players, ['score'], ['desc']),
+      }),
       gameFormChange: payload => {
         return {
           game: {
@@ -41,10 +44,27 @@ const appActions = app(
           },
         };
       },
+      newUserFormChange: payload => {
+        return {
+          newUser: {
+            name: payload.currentTarget[0].value,
+            email: payload.currentTarget[1].value,
+          },
+        };
+      },
+      newUserFormSubmit: newUser => state => actions => {
+        fetch(
+          `createUser/?name=${newUser.name}&email=${newUser.email}`
+        ).then(response => {
+          if (!response.ok) throw new Error('error in newUser');
+          response.text().then(t => actions.setMessage(t));
+          actions.fetchGames();
+        });
+      },
       setMessage: message => state => actions => {
         setTimeout(() => {
           actions.removeMessage(message);
-        }, 10000);
+        }, 5000);
         return { messages: [...state.messages, message] };
       },
       removeMessage: message => state => ({
@@ -56,6 +76,7 @@ const appActions = app(
         default:
           return (
             <div>
+              <h1>FrontMen Pool Cafe</h1>
               {ReduxDevTools({ state })}
               {Overview({ state, actions })}
               {Game({
