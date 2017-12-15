@@ -44,7 +44,5 @@ export const List = ({
 );
 
 const getBadgeClass = idx => {
-  debugger;
-
   return `badge ${idx === 0 ? 'badge-warning' : 'badge-info'}`;
 };
