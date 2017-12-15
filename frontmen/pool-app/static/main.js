@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -392,121 +392,6 @@ function h(type, props) {
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var hyperapp_1 = __webpack_require__(0);
-var lodash_1 = __webpack_require__(2);
-// Types
-var Overview_1 = __webpack_require__(5);
-var Game_1 = __webpack_require__(6);
-var ReduxDevTools_1 = __webpack_require__(7);
-var Messages_1 = __webpack_require__(12);
-var Player_1 = __webpack_require__(13);
-// Views & Actions
-var appActions = hyperapp_1.app({
-    actions: {
-        init: function () { return ({
-            players: [],
-            game: { player1: '', win: '', player2: '' },
-            messages: [],
-            newUser: { name: '', email: '' },
-            view: {
-                name: 'overview',
-                payload: {},
-            },
-        }); },
-        fetchGames: function (_) { return function (state) { return function (actions) {
-            fetch('getUsers/')
-                .then(function (response) { return response.json(); })
-                .then(actions.setPlayers);
-        }; }; },
-        gameFormSubmit: function (game) { return function (state) { return function (actions) {
-            fetch("playGame/?player1=" + game.player1 + "&win=" + game.win + "&player2=" + game.player2).then(function (response) {
-                if (!response.ok)
-                    throw new Error('error in postGame');
-                response.text().then(function (t) { return actions.setMessage(t); });
-                actions.fetchGames();
-            });
-        }; }; },
-        setPlayers: function (players) { return ({
-            players: lodash_1.orderBy(players, ['score'], ['desc']),
-        }); },
-        gameFormChange: function (payload) {
-            return {
-                game: {
-                    player1: payload.currentTarget[0].value,
-                    win: payload.currentTarget.win['value'] === 'win',
-                    player2: payload.currentTarget[3].value,
-                },
-            };
-        },
-        newUserFormChange: function (payload) {
-            return {
-                newUser: {
-                    name: payload.currentTarget[0].value,
-                    email: payload.currentTarget[1].value,
-                },
-            };
-        },
-        newUserFormSubmit: function (newUser) { return function (state) { return function (actions) {
-            fetch("createUser/?name=" + newUser.name + "&email=" + newUser.email).then(function (response) {
-                if (!response.ok)
-                    throw new Error('error in newUser');
-                response.text().then(function (t) { return actions.setMessage(t); });
-                actions.fetchGames();
-            });
-        }; }; },
-        setMessage: function (message) { return function (state) { return function (actions) {
-            setTimeout(function () {
-                actions.removeMessage(message);
-            }, 5000);
-            return { messages: state.messages.concat([message]) };
-        }; }; },
-        removeMessage: function (message) { return function (state) { return ({
-            messages: state.messages.filter(function (m) { return m !== message; }),
-        }); }; },
-        setView: function (_a) {
-            var name = _a.name, payload = _a.payload;
-            return { view: { name: name, payload: payload } };
-        },
-    },
-    view: function (state) { return function (actions) {
-        switch (state.view.name) {
-            case 'player':
-                return (hyperapp_1.h("div", null, Player_1.Player({
-                    player: lodash_1.find(state.players, { _id: state.view.payload }),
-                    setView: actions.setView,
-                    players: state.players,
-                })));
-            case 'overview':
-            default:
-                return (hyperapp_1.h("div", null,
-                    hyperapp_1.h("h1", null, "FrontMen Pool Cafe"),
-                    ReduxDevTools_1.ReduxDevTools({ state: state }),
-                    Overview_1.Overview({
-                        state: state,
-                        actions: actions,
-                    }),
-                    Game_1.Game({
-                        players: state.players,
-                        gameFormChange: actions.gameFormChange,
-                        game: state.game,
-                        gameFormSubmit: actions.gameFormSubmit,
-                        setMessage: actions.setMessage,
-                    }),
-                    Messages_1.Messages({ messages: state.messages })));
-        }
-    }; },
-}, document.getElementById('app'));
-appActions.init();
-appActions.fetchGames();
-
-
-/***/ }),
-/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -17598,6 +17483,121 @@ appActions.fetchGames();
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(4)(module)))
 
 /***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var hyperapp_1 = __webpack_require__(0);
+var lodash_1 = __webpack_require__(1);
+// Types
+var Overview_1 = __webpack_require__(5);
+var Game_1 = __webpack_require__(6);
+var ReduxDevTools_1 = __webpack_require__(7);
+var Messages_1 = __webpack_require__(12);
+var Player_1 = __webpack_require__(13);
+// Views & Actions
+var appActions = hyperapp_1.app({
+    actions: {
+        init: function () { return ({
+            players: [],
+            game: { player1: '', win: '', player2: '' },
+            messages: [],
+            newUser: { name: '', email: '' },
+            view: {
+                name: 'overview',
+                payload: {},
+            },
+        }); },
+        fetchGames: function (_) { return function (state) { return function (actions) {
+            fetch('getUsers/')
+                .then(function (response) { return response.json(); })
+                .then(actions.setPlayers);
+        }; }; },
+        gameFormSubmit: function (game) { return function (state) { return function (actions) {
+            fetch("playGame/?player1=" + game.player1 + "&win=" + game.win + "&player2=" + game.player2).then(function (response) {
+                if (!response.ok)
+                    throw new Error('error in postGame');
+                response.text().then(function (t) { return actions.setMessage(t); });
+                actions.fetchGames();
+            });
+        }; }; },
+        setPlayers: function (players) { return ({
+            players: lodash_1.orderBy(players, ['score'], ['desc']),
+        }); },
+        gameFormChange: function (payload) {
+            return {
+                game: {
+                    player1: payload.currentTarget[0].value,
+                    win: payload.currentTarget.win['value'] === 'win',
+                    player2: payload.currentTarget[3].value,
+                },
+            };
+        },
+        newUserFormChange: function (payload) {
+            return {
+                newUser: {
+                    name: payload.currentTarget[0].value,
+                    email: payload.currentTarget[1].value,
+                },
+            };
+        },
+        newUserFormSubmit: function (newUser) { return function (state) { return function (actions) {
+            fetch("createUser/?name=" + newUser.name + "&email=" + newUser.email).then(function (response) {
+                if (!response.ok)
+                    throw new Error('error in newUser');
+                response.text().then(function (t) { return actions.setMessage(t); });
+                actions.fetchGames();
+            });
+        }; }; },
+        setMessage: function (message) { return function (state) { return function (actions) {
+            setTimeout(function () {
+                actions.removeMessage(message);
+            }, 5000);
+            return { messages: state.messages.concat([message]) };
+        }; }; },
+        removeMessage: function (message) { return function (state) { return ({
+            messages: state.messages.filter(function (m) { return m !== message; }),
+        }); }; },
+        setView: function (_a) {
+            var name = _a.name, payload = _a.payload;
+            return { view: { name: name, payload: payload } };
+        },
+    },
+    view: function (state) { return function (actions) {
+        switch (state.view.name) {
+            case 'player':
+                return (hyperapp_1.h("div", null, Player_1.Player({
+                    player: lodash_1.find(state.players, { _id: state.view.payload }),
+                    setView: actions.setView,
+                    players: state.players,
+                })));
+            case 'overview':
+            default:
+                return (hyperapp_1.h("div", null,
+                    hyperapp_1.h("h1", null, "FrontMen Pool Cafe"),
+                    ReduxDevTools_1.ReduxDevTools({ state: state }),
+                    Overview_1.Overview({
+                        state: state,
+                        actions: actions,
+                    }),
+                    Game_1.Game({
+                        players: state.players,
+                        gameFormChange: actions.gameFormChange,
+                        game: state.game,
+                        gameFormSubmit: actions.gameFormSubmit,
+                        setMessage: actions.setMessage,
+                    }),
+                    Messages_1.Messages({ messages: state.messages })));
+        }
+    }; },
+}, document.getElementById('app'));
+appActions.init();
+appActions.fetchGames();
+
+
+/***/ }),
 /* 3 */
 /***/ (function(module, exports) {
 
@@ -17700,37 +17700,34 @@ var hyperapp_1 = __webpack_require__(0);
 exports.Game = function (_a) {
     var players = _a.players, gameFormChange = _a.gameFormChange, game = _a.game, gameFormSubmit = _a.gameFormSubmit, setMessage = _a.setMessage;
     return (hyperapp_1.h("div", { class: "row" },
-        hyperapp_1.h("form", { onchange: gameFormChange, onsubmit: function (e) {
-                e.preventDefault();
-                gameFormSubmit(game);
-            } },
-            hyperapp_1.h("div", { class: "col-xs-12" },
+        hyperapp_1.h("div", { class: "col-sm" },
+            hyperapp_1.h("form", { onchange: gameFormChange, onsubmit: function (e) {
+                    e.preventDefault();
+                    gameFormSubmit(game);
+                } },
                 hyperapp_1.h("h3", null, "Game"),
-                hyperapp_1.h("label", { for: "playerSelect" }, "Speler"),
-                hyperapp_1.h("select", { id: "playerSelect", name: "player", class: "form-control" },
-                    hyperapp_1.h("option", { disabled: true, selected: !game.player1 || !game.player1.name }, "Selecteer"),
-                    players.map(function (p) { return hyperapp_1.h("option", { value: p.name }, p.name); }))),
-            hyperapp_1.h("div", { class: "col-xs-12" },
+                hyperapp_1.h("div", { class: "form-group" },
+                    hyperapp_1.h("label", { for: "playerSelect" }, "Speler"),
+                    hyperapp_1.h("select", { id: "playerSelect", name: "player", class: "form-control" },
+                        hyperapp_1.h("option", { disabled: true, selected: !game.player1 || !game.player1.name }, "Selecteer"),
+                        players.map(function (p) { return hyperapp_1.h("option", { value: p.name }, p.name); }))),
                 hyperapp_1.h(FancyRadio, { name: "win", value: "win", label: "wint van" }),
-                hyperapp_1.h(FancyRadio, { name: "win", value: "loose", label: "verliest van" })),
-            hyperapp_1.h("div", { class: "col-xs-12" },
-                hyperapp_1.h("label", { for: "opponentSelect" }, "Tegenstander"),
-                hyperapp_1.h("select", { id: "opponentSelect", name: "opponent", class: "form-control" },
-                    hyperapp_1.h("option", { disabled: true, selected: !game.player2 || !game.player2.name }, "Selecteer"),
-                    players
-                        .filter(function (p) { return p.name !== game.player1; })
-                        .map(function (p) { return hyperapp_1.h("option", { value: p.name }, p.name); }))),
-            hyperapp_1.h("div", { class: "col-xs-12" },
-                hyperapp_1.h("input", { type: "submit", value: "play!", class: "btn btn-block btn-lg btn-primary" })))));
+                hyperapp_1.h(FancyRadio, { name: "win", value: "loose", label: "verliest van" }),
+                hyperapp_1.h("div", { class: "form-group" },
+                    hyperapp_1.h("label", { for: "opponentSelect" }, "Tegenstander"),
+                    hyperapp_1.h("select", { id: "opponentSelect", name: "opponent", class: "form-control" },
+                        hyperapp_1.h("option", { disabled: true, selected: !game.player2 || !game.player2.name }, "Selecteer"),
+                        players
+                            .filter(function (p) { return p.name !== game.player1; })
+                            .map(function (p) { return hyperapp_1.h("option", { value: p.name }, p.name); })),
+                    hyperapp_1.h("input", { type: "submit", value: "play!", class: "btn btn-block btn-lg btn-primary" }))))));
 };
 var FancyRadio = function (_a) {
     var name = _a.name, value = _a.value, label = _a.label;
-    return (hyperapp_1.h("label", { class: "radio" },
-        hyperapp_1.h("input", { type: "radio", name: name, value: value, "data-toggle": "radio", class: "custom-radio" }),
-        hyperapp_1.h("span", { class: "icons" },
-            hyperapp_1.h("span", { class: "icon-unchecked" }),
-            hyperapp_1.h("span", { class: "icon-checked" })),
-        label));
+    return (hyperapp_1.h("div", { class: "form-check" },
+        hyperapp_1.h("label", { class: "form-check-label" },
+            hyperapp_1.h("input", { type: "radio", name: name, value: value, class: "form-check-input" }),
+            label)));
 };
 
 
@@ -18571,7 +18568,7 @@ exports.Messages = function (_a) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var hyperapp_1 = __webpack_require__(0);
-var lodash_1 = __webpack_require__(2);
+var lodash_1 = __webpack_require__(1);
 exports.Player = function (_a) {
     var player = _a.player, setView = _a.setView, players = _a.players;
     return (hyperapp_1.h("div", null,
