@@ -461,16 +461,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var hyperapp_1 = __webpack_require__(0);
 exports.Overview = function (_a) {
     var state = _a.state, actions = _a.actions;
-    return (hyperapp_1.h("div", null,
-        hyperapp_1.h("h1", null, "Ranking"),
-        hyperapp_1.h(exports.List, { players: state.players })));
+    return (hyperapp_1.h("div", { class: "row" },
+        hyperapp_1.h("div", { class: "col-lg-6" },
+            hyperapp_1.h("h1", null, "Ranking"),
+            hyperapp_1.h(exports.List, { players: state.players }))));
 };
 exports.List = function (_a) {
     var players = _a.players;
-    return (hyperapp_1.h("ul", { class: "list-group" }, players.map(function (p) { return (hyperapp_1.h("li", { class: "list-group-item" },
+    return (hyperapp_1.h("ul", { class: "list-group" }, players.map(function (p) { return (hyperapp_1.h("li", { class: "list-group-item justify-content-between" },
         p.name,
-        ", ",
-        p.score)); })));
+        hyperapp_1.h("span", { class: "badge badge-warning badge-pill" }, p.score))); })));
 };
 
 
@@ -487,23 +487,20 @@ exports.Game = function (_a) {
     return (hyperapp_1.h("div", { class: "row" },
         hyperapp_1.h("form", { onchange: gameFormChange },
             hyperapp_1.h("div", { class: "col-xs-3" },
-                hyperapp_1.h("label", null,
-                    "Afstootert",
-                    ' ',
-                    hyperapp_1.h("select", { name: "player" },
-                        hyperapp_1.h("option", { disabled: true, selected: !game.player1 || !game.player1.name }, "Selecteer"),
-                        players.map(function (p) { return hyperapp_1.h("option", { value: p.name }, p.name); })))),
+                hyperapp_1.h("label", { for: "playerSelect" }, "Speler"),
+                hyperapp_1.h("select", { id: "playerSelect", name: "player", class: "form-control" },
+                    hyperapp_1.h("option", { disabled: true, selected: !game.player1 || !game.player1.name }, "Selecteer"),
+                    players.map(function (p) { return hyperapp_1.h("option", { value: p.name }, p.name); }))),
             hyperapp_1.h("div", { class: "col-xs-3" },
                 hyperapp_1.h(FancyRadio, { name: "win", value: "win", label: "wint van" }),
                 hyperapp_1.h(FancyRadio, { name: "win", value: "loose", label: "verliest van" })),
             hyperapp_1.h("div", { class: "col-xs-3" },
-                hyperapp_1.h("label", null,
-                    "Tegenstander",
-                    hyperapp_1.h("select", { name: "opponent" },
-                        hyperapp_1.h("option", { disabled: true, selected: !game.player2 || !game.player2.name }, "Selecteer"),
-                        players
-                            .filter(function (p) { return p.name !== game.player1; })
-                            .map(function (p) { return hyperapp_1.h("option", { value: p.name }, p.name); })))))));
+                hyperapp_1.h("label", { for: "opponentSelect" }, "Tegenstander"),
+                hyperapp_1.h("select", { id: "opponentSelect", name: "opponent", class: "form-control" },
+                    hyperapp_1.h("option", { disabled: true, selected: !game.player2 || !game.player2.name }, "Selecteer"),
+                    players
+                        .filter(function (p) { return p.name !== game.player1; })
+                        .map(function (p) { return hyperapp_1.h("option", { value: p.name }, p.name); }))))));
 };
 var FancyRadio = function (_a) {
     var name = _a.name, value = _a.value, label = _a.label;
