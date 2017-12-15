@@ -9,6 +9,7 @@ export const Overview = ({ state, actions }) => (
         newUser={state.newUser}
         newUserFormChange={actions.newUserFormChange}
         newUserFormSubmit={actions.newUserFormSubmit}
+        setView={actions.setView}
       />
     </div>
   </div>
@@ -19,10 +20,16 @@ export const List = ({
   newUser,
   newUserFormChange,
   newUserFormSubmit,
+  setView,
 }) => (
   <ul class="list-group">
     {players.map((p, idx) => (
-      <li class="list-group-item d-flex justify-content-between align-items-center">
+      <li
+        class="list-group-item d-flex justify-content-between align-items-center"
+        onclick={e => {
+          setView({ name: 'player', payload: p._id });
+        }}
+      >
         {p.name}
         <span class={getBadgeClass(idx)}>{p.score}</span>
       </li>
@@ -44,7 +51,5 @@ export const List = ({
 );
 
 const getBadgeClass = idx => {
-  debugger;
-
   return `badge ${idx === 0 ? 'badge-warning' : 'badge-info'}`;
 };

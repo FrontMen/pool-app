@@ -1,12 +1,13 @@
 import { app, h } from 'hyperapp';
 import * as _debug from 'debug';
-import { orderBy } from 'lodash';
+import { find, orderBy } from 'lodash';
 
 // Types
 import { Overview } from './Overview';
 import { Game } from './Game';
 import { ReduxDevTools } from './application/ReduxDevTools';
 import { Messages } from './Messages';
+import { Player } from './Player';
 
 // Views & Actions
 const appActions = app(
@@ -17,6 +18,10 @@ const appActions = app(
         game: { player1: '', win: '', player2: '' },
         messages: [],
         newUser: { name: '', email: '' },
+        view: {
+          name: 'overview',
+          payload: {},
+        },
       }),
       fetchGames: _ => state => actions => {
         fetch('getUsers/')
@@ -70,15 +75,32 @@ const appActions = app(
       removeMessage: message => state => ({
         messages: state.messages.filter(m => m !== message),
       }),
+      setView: ({ name, payload }) => {
+        return { view: { name, payload } };
+      },
     },
     view: (state: any) => (actions: any) => {
-      switch (state.view) {
+      switch (state.view.name) {
+        case 'player':
+          return (
+            <div>
+              {Player({
+                player: find(state.players, { _id: state.view.payload }),
+                setView: actions.setView,
+                players: state.players,
+              })}
+            </div>
+          );
+        case 'overview':
         default:
           return (
             <div>
               <h1>FrontMen Pool Cafe</h1>
               {ReduxDevTools({ state })}
-              {Overview({ state, actions })}
+              {Overview({
+                state,
+                actions,
+              })}
               {Game({
                 players: state.players,
                 gameFormChange: actions.gameFormChange,

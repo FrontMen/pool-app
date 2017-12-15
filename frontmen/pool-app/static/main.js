@@ -404,6 +404,7 @@ var Overview_1 = __webpack_require__(5);
 var Game_1 = __webpack_require__(6);
 var ReduxDevTools_1 = __webpack_require__(7);
 var Messages_1 = __webpack_require__(12);
+var Player_1 = __webpack_require__(13);
 // Views & Actions
 var appActions = hyperapp_1.app({
     actions: {
@@ -412,6 +413,10 @@ var appActions = hyperapp_1.app({
             game: { player1: '', win: '', player2: '' },
             messages: [],
             newUser: { name: '', email: '' },
+            view: {
+                name: 'overview',
+                payload: {},
+            },
         }); },
         fetchGames: function (_) { return function (state) { return function (actions) {
             fetch('getUsers/')
@@ -463,14 +468,28 @@ var appActions = hyperapp_1.app({
         removeMessage: function (message) { return function (state) { return ({
             messages: state.messages.filter(function (m) { return m !== message; }),
         }); }; },
+        setView: function (_a) {
+            var name = _a.name, payload = _a.payload;
+            return { view: { name: name, payload: payload } };
+        },
     },
     view: function (state) { return function (actions) {
-        switch (state.view) {
+        switch (state.view.name) {
+            case 'player':
+                return (hyperapp_1.h("div", null, Player_1.Player({
+                    player: lodash_1.find(state.players, { _id: state.view.payload }),
+                    setView: actions.setView,
+                    players: state.players,
+                })));
+            case 'overview':
             default:
                 return (hyperapp_1.h("div", null,
                     hyperapp_1.h("h1", null, "FrontMen Pool Cafe"),
                     ReduxDevTools_1.ReduxDevTools({ state: state }),
-                    Overview_1.Overview({ state: state, actions: actions }),
+                    Overview_1.Overview({
+                        state: state,
+                        actions: actions,
+                    }),
                     Game_1.Game({
                         players: state.players,
                         gameFormChange: actions.gameFormChange,
@@ -17646,12 +17665,14 @@ exports.Overview = function (_a) {
     return (hyperapp_1.h("div", { class: "row" },
         hyperapp_1.h("div", { class: "col-lg-6" },
             hyperapp_1.h("h3", null, "Ranking"),
-            hyperapp_1.h(exports.List, { players: state.players, newUser: state.newUser, newUserFormChange: actions.newUserFormChange, newUserFormSubmit: actions.newUserFormSubmit }))));
+            hyperapp_1.h(exports.List, { players: state.players, newUser: state.newUser, newUserFormChange: actions.newUserFormChange, newUserFormSubmit: actions.newUserFormSubmit, setView: actions.setView }))));
 };
 exports.List = function (_a) {
-    var players = _a.players, newUser = _a.newUser, newUserFormChange = _a.newUserFormChange, newUserFormSubmit = _a.newUserFormSubmit;
+    var players = _a.players, newUser = _a.newUser, newUserFormChange = _a.newUserFormChange, newUserFormSubmit = _a.newUserFormSubmit, setView = _a.setView;
     return (hyperapp_1.h("ul", { class: "list-group" },
-        players.map(function (p, idx) { return (hyperapp_1.h("li", { class: "list-group-item d-flex justify-content-between align-items-center" },
+        players.map(function (p, idx) { return (hyperapp_1.h("li", { class: "list-group-item d-flex justify-content-between align-items-center", onclick: function (e) {
+                setView({ name: 'player', payload: p._id });
+            } },
             p.name,
             hyperapp_1.h("span", { class: getBadgeClass(idx) }, p.score))); }),
         hyperapp_1.h("li", { class: "list-group-item justify-content-between" },
@@ -17664,7 +17685,6 @@ exports.List = function (_a) {
                 hyperapp_1.h("input", { type: "submit", value: "+" })))));
 };
 var getBadgeClass = function (idx) {
-    debugger;
     return "badge " + (idx === 0 ? 'badge-warning' : 'badge-info');
 };
 
@@ -18543,6 +18563,43 @@ exports.Messages = function (_a) {
 };
 
 
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var hyperapp_1 = __webpack_require__(0);
+var lodash_1 = __webpack_require__(2);
+exports.Player = function (_a) {
+    var player = _a.player, setView = _a.setView, players = _a.players;
+    return (hyperapp_1.h("div", null,
+        hyperapp_1.h("span", { onclick: function () { return setView('overview'); } }, "Terug"),
+        hyperapp_1.h("h3", null,
+            player.name,
+            " - ",
+            player.score),
+        hyperapp_1.h("ul", null, player.matches ? Matches({ player: player, players: players }) : 'Nog geen games')));
+};
+var Matches = function (_a) {
+    var player = _a.player, players = _a.players;
+    return lodash_1.orderBy(player.matches, ['date'], ['desc']).map(function (match) {
+        return Match({ match: match, players: players });
+    });
+};
+var Match = function (_a) {
+    var match = _a.match, players = _a.players;
+    return (hyperapp_1.h("li", null,
+        won(match),
+        " van ",
+        getPlayer(match.opponent, players).name,
+        ": ",
+        match.diff));
+};
+var won = function (match) { return (+match.diff > 0 ? 'Gewonnen' : 'Verloren'); };
+var getPlayer = function (id, players) { return lodash_1.find(players, { _id: id }); };
+
+
 /***/ })
 /******/ ]);
-//# sourceMappingURL=main.js.map
