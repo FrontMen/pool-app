@@ -17670,7 +17670,7 @@ exports.Overview = function (_a) {
 exports.List = function (_a) {
     var players = _a.players, newUser = _a.newUser, newUserFormChange = _a.newUserFormChange, newUserFormSubmit = _a.newUserFormSubmit, setView = _a.setView;
     return (hyperapp_1.h("ul", { class: "list-group" },
-        players.map(function (p, idx) { return (hyperapp_1.h("li", { class: "list-group-item d-flex justify-content-between align-items-center", onclick: function (e) {
+        players.map(function (p, idx) { return (hyperapp_1.h("li", { key: p._id, class: "list-group-item d-flex justify-content-between align-items-center", onclick: function (e) {
                 setView({ name: 'player', payload: p._id });
             } },
             p.name,
@@ -18587,7 +18587,7 @@ var Matches = function (_a) {
 };
 var Match = function (_a) {
     var match = _a.match, players = _a.players;
-    return (hyperapp_1.h("li", null,
+    return (hyperapp_1.h("li", { key: match.matchId },
         won(match),
         " van ",
         getPlayer(match.opponent, players).name,

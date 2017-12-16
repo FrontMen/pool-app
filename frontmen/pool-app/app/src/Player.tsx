@@ -23,7 +23,7 @@ const Matches = ({ player, players }) => {
 
 const Match = ({ match, players }) => {
   return (
-    <li>
+    <li key={match.matchId}>
       {won(match)} van {getPlayer(match.opponent, players).name}: {match.diff}
     </li>
   );

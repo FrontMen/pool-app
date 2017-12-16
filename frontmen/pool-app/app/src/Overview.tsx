@@ -25,6 +25,7 @@ export const List = ({
   <ul class="list-group">
     {players.map((p, idx) => (
       <li
+        key={p._id}
         class="list-group-item d-flex justify-content-between align-items-center"
         onclick={e => {
           setView({ name: 'player', payload: p._id });
