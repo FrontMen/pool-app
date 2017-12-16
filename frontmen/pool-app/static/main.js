@@ -17497,6 +17497,8 @@ var Game_1 = __webpack_require__(6);
 var ReduxDevTools_1 = __webpack_require__(7);
 var Messages_1 = __webpack_require__(12);
 var Player_1 = __webpack_require__(13);
+var Login_1 = __webpack_require__(14);
+var Layout_1 = __webpack_require__(15);
 // Views & Actions
 var appActions = hyperapp_1.app({
     actions: {
@@ -17506,7 +17508,7 @@ var appActions = hyperapp_1.app({
             messages: [],
             newUser: { name: '', email: '' },
             view: {
-                name: 'overview',
+                name: 'login',
                 payload: {},
             },
         }); },
@@ -17568,15 +17570,16 @@ var appActions = hyperapp_1.app({
     view: function (state) { return function (actions) {
         switch (state.view.name) {
             case 'player':
-                return (hyperapp_1.h("div", null, Player_1.Player({
+                return Layout_1.LayoutMixin(Player_1.Player({
                     player: lodash_1.find(state.players, { _id: state.view.payload }),
                     setView: actions.setView,
                     players: state.players,
-                })));
+                }));
+            case 'login':
+                return Layout_1.LayoutMixin(Login_1.LoginView({ setView: actions.setView }));
             case 'overview':
             default:
-                return (hyperapp_1.h("div", null,
-                    hyperapp_1.h("h1", null, "FrontMen Pool Cafe"),
+                return Layout_1.LayoutMixin(hyperapp_1.h("div", null,
                     ReduxDevTools_1.ReduxDevTools({ state: state }),
                     Overview_1.Overview({
                         state: state,
@@ -18596,6 +18599,49 @@ var Match = function (_a) {
 };
 var won = function (match) { return (+match.diff > 0 ? 'Gewonnen' : 'Verloren'); };
 var getPlayer = function (id, players) { return lodash_1.find(players, { _id: id }); };
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var hyperapp_1 = __webpack_require__(0);
+exports.LoginView = function (_a) {
+    var setView = _a.setView;
+    return (hyperapp_1.h("div", null,
+        hyperapp_1.h("h3", null, "Login"),
+        hyperapp_1.h("form", { onchange: "{}", onsubmit: function (e) {
+                e.preventDefault();
+                // TODO: properly login
+                setView('overview');
+            } },
+            hyperapp_1.h("div", { class: "form-group" },
+                hyperapp_1.h("label", { for: "email" }, "Email"),
+                hyperapp_1.h("input", { placeholder: "me@domain.com", id: "email", name: "name", type: "text", class: "form-control" })),
+            hyperapp_1.h("div", { class: "form-group" },
+                hyperapp_1.h("label", { for: "password" }, "Password"),
+                hyperapp_1.h("input", { id: "password", name: "password", type: "password", class: "form-control" })),
+            hyperapp_1.h("div", { class: "form-group" },
+                hyperapp_1.h("input", { type: "submit", value: "Login", class: "btn btn-block btn-lg btn-primary" })))));
+};
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var hyperapp_1 = __webpack_require__(0);
+exports.LayoutMixin = function (View) {
+    return (hyperapp_1.h("div", null,
+        hyperapp_1.h("h1", null, "FrontMen Pool Cafe"),
+        View));
+};
 
 
 /***/ })

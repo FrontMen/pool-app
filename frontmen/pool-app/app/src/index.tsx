@@ -8,6 +8,8 @@ import { Game } from './Game';
 import { ReduxDevTools } from './application/ReduxDevTools';
 import { Messages } from './Messages';
 import { Player } from './Player';
+import { LoginView } from './Login';
+import { LayoutMixin } from './application/Layout';
 
 // Views & Actions
 const appActions = app(
@@ -19,7 +21,7 @@ const appActions = app(
         messages: [],
         newUser: { name: '', email: '' },
         view: {
-          name: 'overview',
+          name: 'login',
           payload: {},
         },
       }),
@@ -82,20 +84,19 @@ const appActions = app(
     view: (state: any) => (actions: any) => {
       switch (state.view.name) {
         case 'player':
-          return (
-            <div>
-              {Player({
-                player: find(state.players, { _id: state.view.payload }),
-                setView: actions.setView,
-                players: state.players,
-              })}
-            </div>
+          return LayoutMixin(
+            Player({
+              player: find(state.players, { _id: state.view.payload }),
+              setView: actions.setView,
+              players: state.players,
+            })
           );
+        case 'login':
+          return LayoutMixin(LoginView({ setView: actions.setView }));
         case 'overview':
         default:
-          return (
+          return LayoutMixin(
             <div>
-              <h1>FrontMen Pool Cafe</h1>
               {ReduxDevTools({ state })}
               {Overview({
                 state,
