@@ -9,21 +9,30 @@ export const Player = ({ player, setView, players }) => {
         {player.name} - {player.score}
       </h3>
       <ul>
-        {player.matches ? Matches({ player, players }) : 'Nog geen games'}
+        {player.matches ? (
+          Matches({ player, players, setView })
+        ) : (
+          'Nog geen games'
+        )}
       </ul>
     </div>
   );
 };
 
-const Matches = ({ player, players }) => {
+const Matches = ({ player, players, setView }) => {
   return orderBy(player.matches, ['date'], ['desc']).map(match =>
-    Match({ match, players })
+    Match({ match, players, setView })
   );
 };
 
-const Match = ({ match, players }) => {
+const Match = ({ match, players, setView }) => {
   return (
-    <li key={match.matchId}>
+    <li
+      key={match.matchId}
+      onclick={() => {
+        setView({ name: 'player', payload: match.opponent });
+      }}
+    >
       {won(match)} van {getPlayer(match.opponent, players).name}: {match.diff}
     </li>
   );

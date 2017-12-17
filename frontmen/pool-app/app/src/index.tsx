@@ -2,6 +2,8 @@ import { app, h } from 'hyperapp';
 import * as _debug from 'debug';
 import { find, orderBy } from 'lodash';
 
+const debug = _debug('app:index');
+
 // Types
 import { Overview } from './Overview';
 import { Game } from './Game';
@@ -21,7 +23,7 @@ const appActions = app(
         messages: [],
         newUser: { name: '', email: '' },
         view: {
-          name: 'login',
+          name: 'overview',
           payload: {},
         },
       }),
@@ -82,6 +84,11 @@ const appActions = app(
       },
     },
     view: (state: any) => (actions: any) => {
+      debug(
+        'navigating to %s with payload %o',
+        state.view.name,
+        state.view.payload
+      );
       switch (state.view.name) {
         case 'player':
           return LayoutMixin(
