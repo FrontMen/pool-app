@@ -26,10 +26,20 @@ export const Game = ({
             {players.map(p => <option value={p.name}>{p.name}</option>)}
           </select>
         </div>
-
-        <FancyRadio name="win" value="win" label="wint van" />
-
-        <FancyRadio name="win" value="loose" label="verliest van" />
+        <div class="btn-group btn-block" data-toggle="buttons">
+          <FancyRadio
+            name="win"
+            value="win"
+            label="wint van"
+            radioValue={game.win ? 'win' : 'loose'}
+          />
+          <FancyRadio
+            name="win"
+            value="loose"
+            label="verliest van"
+            radioValue={game.win ? 'win' : 'loose'}
+          />
+        </div>
         <div class="form-group">
           <label for="opponentSelect">Tegenstander</label>
           <select id="opponentSelect" name="opponent" class="form-control">
@@ -40,10 +50,12 @@ export const Game = ({
               .filter(p => p.name !== game.player1)
               .map(p => <option value={p.name}>{p.name}</option>)}
           </select>
+        </div>
+        <div class="form-group">
           <input
             type="submit"
             value="play!"
-            class="btn btn-block btn-lg btn-primary"
+            class="btn btn-block btn-primary"
           />
         </div>
       </form>
@@ -51,11 +63,13 @@ export const Game = ({
   </div>
 );
 
-const FancyRadio = ({ name, value, label }) => (
-  <div class="form-check">
-    <label class="form-check-label">
-      <input type="radio" name={name} value={value} class="form-check-input" />
-      {label}
-    </label>
-  </div>
+const FancyRadio = ({ name, value, label, radioValue }) => (
+  <label
+    class={
+      radioValue === value ? 'btn btn-secondary active' : 'btn btn-secondary'
+    }
+  >
+    <input type="radio" name={name} autocomplete="off" value={value} />
+    {label}
+  </label>
 );

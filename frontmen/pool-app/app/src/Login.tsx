@@ -40,7 +40,7 @@ export const LoginView = ({ setView, login }) => {
             <input
               type="submit"
               value="Login"
-              class="btn btn-block btn-lg btn-primary"
+              class="btn btn-block btn-primary"
             />
           </div>
         </form>

@@ -51,7 +51,7 @@ export const List = ({
         <input
           type="button"
           value="Nieuwe speler"
-          class="btn btn-block btn-xs btn"
+          class="btn btn-block btn-xs"
           onclick={toggleShowNewPlayer}
         />,
       ]
