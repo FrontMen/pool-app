@@ -59,7 +59,9 @@ const sendCreateUserEmail = (email, secret, context) => {
       <body>
         <p>
           Welkom in FrontMen Pool Cafe <br />
-          De qr code voor Google Authenticator om in te loggen: <br />
+          <br />
+          https://frontmen.stdlib.com/pool-app/
+          De One Time Passcode voor Google Authenticator om in te loggen: <br />
           <img src="cid:imageblaat" /> <br />
           Token: <a href="${secret.otpauth_url}">${secret.base32}</a> <br />
           Succes! <br />
