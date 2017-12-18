@@ -18578,6 +18578,8 @@ exports.Player = function (_a) {
     var player = _a.player, players = _a.players;
     return (hyperapp_1.h("div", { class: "row" },
         hyperapp_1.h("div", { class: "col-12" },
+            hyperapp_1.h("div", { class: "text-center" },
+                hyperapp_1.h("img", { src: "https://robohash.org/" + player.name, class: "rounded", alt: player.name })),
             hyperapp_1.h("h3", null,
                 player.name,
                 " - ",

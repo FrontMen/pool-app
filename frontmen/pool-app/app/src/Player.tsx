@@ -5,6 +5,14 @@ export const Player = ({ player, players }) => {
   return (
     <div class="row">
       <div class="col-12">
+        <div class="text-center">
+          <img
+            src={`https://robohash.org/${player.name}`}
+            class="rounded"
+            alt={player.name}
+          />
+        </div>
+
         <h3>
           {player.name} - {player.score}
         </h3>
