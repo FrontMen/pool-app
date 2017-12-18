@@ -17572,11 +17572,12 @@ var appActions = hyperapp_1.app({
             case 'player':
                 return Layout_1.LayoutMixin(Player_1.Player({
                     player: lodash_1.find(state.players, { _id: state.view.payload }),
-                    setView: actions.setView,
                     players: state.players,
-                }));
+                }), { setView: actions.setView });
             case 'login':
-                return Layout_1.LayoutMixin(Login_1.LoginView({ setView: actions.setView }));
+                return Layout_1.LayoutMixin(Login_1.LoginView({ setView: actions.setView }), {
+                    setView: actions.setView,
+                });
             case 'overview':
             default:
                 return Layout_1.LayoutMixin(hyperapp_1.h("div", null,
@@ -17592,10 +17593,10 @@ var appActions = hyperapp_1.app({
                         gameFormSubmit: actions.gameFormSubmit,
                         setMessage: actions.setMessage,
                     }),
-                    Messages_1.Messages({ messages: state.messages })));
+                    Messages_1.Messages({ messages: state.messages })), { setView: actions.setView });
         }
     }; },
-}, document.getElementById('app'));
+});
 appActions.init();
 appActions.fetchGames();
 
@@ -17666,7 +17667,7 @@ var hyperapp_1 = __webpack_require__(0);
 exports.Overview = function (_a) {
     var state = _a.state, actions = _a.actions;
     return (hyperapp_1.h("div", { class: "row" },
-        hyperapp_1.h("div", { class: "col-lg-6" },
+        hyperapp_1.h("div", { class: "col-12" },
             hyperapp_1.h("h3", null, "Ranking"),
             hyperapp_1.h(exports.List, { players: state.players, newUser: state.newUser, newUserFormChange: actions.newUserFormChange, newUserFormSubmit: actions.newUserFormSubmit, setView: actions.setView }))));
 };
@@ -18559,8 +18560,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var hyperapp_1 = __webpack_require__(0);
 exports.Messages = function (_a) {
     var messages = _a.messages;
-    return hyperapp_1.h("ul", null, messages.map(function (m) { return hyperapp_1.h("li", null, m); }));
+    return messages.map(Message);
 };
+var Message = function (msg) { return (hyperapp_1.h("div", { class: "alert alert-secondary", role: "alert" }, msg)); };
 
 
 /***/ }),
@@ -18573,14 +18575,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var hyperapp_1 = __webpack_require__(0);
 var lodash_1 = __webpack_require__(1);
 exports.Player = function (_a) {
-    var player = _a.player, setView = _a.setView, players = _a.players;
-    return (hyperapp_1.h("div", null,
-        hyperapp_1.h("span", { onclick: function () { return setView('overview'); } }, "Terug"),
-        hyperapp_1.h("h3", null,
-            player.name,
-            " - ",
-            player.score),
-        hyperapp_1.h("ul", { class: "list-group" }, player.matches ? Matches({ player: player, players: players }) : 'Nog geen games')));
+    var player = _a.player, players = _a.players;
+    return (hyperapp_1.h("div", { class: "row" },
+        hyperapp_1.h("div", { class: "col-12" },
+            hyperapp_1.h("h3", null,
+                player.name,
+                " - ",
+                player.score),
+            hyperapp_1.h("ul", { class: "list-group" }, player.matches ? Matches({ player: player, players: players }) : 'Nog geen games'))));
 };
 var Matches = function (_a) {
     var player = _a.player, players = _a.players;
@@ -18590,14 +18592,17 @@ var Matches = function (_a) {
 };
 var Match = function (_a) {
     var match = _a.match, players = _a.players;
-    var badgeClass = "badge badge-" + (won(match) ? 'success' : 'secondary') + " badge-pill";
+    var badgeClass = "badge badge-" + (won(match)
+        ? 'success'
+        : 'secondary') + " badge-pill";
     return (hyperapp_1.h("li", { class: "list-group-item d-flex justify-content-between align-items-center", key: match.matchId },
         won(match) ? 'Gewonnen' : 'Verloren',
-        " van ",
+        " van",
+        ' ',
         getPlayer(match.opponent, players).name,
         hyperapp_1.h("span", { class: badgeClass }, match.diff)));
 };
-var won = function (match) { return (+match.diff > 0); };
+var won = function (match) { return +match.diff > 0; };
 var getPlayer = function (id, players) { return lodash_1.find(players, { _id: id }); };
 
 
@@ -18611,21 +18616,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var hyperapp_1 = __webpack_require__(0);
 exports.LoginView = function (_a) {
     var setView = _a.setView;
-    return (hyperapp_1.h("div", null,
-        hyperapp_1.h("h3", null, "Login"),
-        hyperapp_1.h("form", { onchange: "{}", onsubmit: function (e) {
-                e.preventDefault();
-                // TODO: properly login
-                setView('overview');
-            } },
-            hyperapp_1.h("div", { class: "form-group" },
-                hyperapp_1.h("label", { for: "email" }, "Email"),
-                hyperapp_1.h("input", { placeholder: "me@domain.com", id: "email", name: "name", type: "text", class: "form-control" })),
-            hyperapp_1.h("div", { class: "form-group" },
-                hyperapp_1.h("label", { for: "password" }, "Password"),
-                hyperapp_1.h("input", { id: "password", name: "password", type: "password", class: "form-control" })),
-            hyperapp_1.h("div", { class: "form-group" },
-                hyperapp_1.h("input", { type: "submit", value: "Login", class: "btn btn-block btn-lg btn-primary" })))));
+    return (hyperapp_1.h("div", { class: "row" },
+        hyperapp_1.h("div", { class: "col-12" },
+            hyperapp_1.h("h3", null, "Login"),
+            hyperapp_1.h("form", { onchange: "{}", onsubmit: function (e) {
+                    e.preventDefault();
+                    // TODO: properly login
+                    setView('overview');
+                } },
+                hyperapp_1.h("div", { class: "form-group" },
+                    hyperapp_1.h("label", { for: "email" }, "Email"),
+                    hyperapp_1.h("input", { placeholder: "me@domain.com", id: "email", name: "name", type: "text", class: "form-control" })),
+                hyperapp_1.h("div", { class: "form-group" },
+                    hyperapp_1.h("label", { for: "password" }, "Password"),
+                    hyperapp_1.h("input", { id: "password", name: "password", type: "password", class: "form-control" })),
+                hyperapp_1.h("div", { class: "form-group" },
+                    hyperapp_1.h("input", { type: "submit", value: "Login", class: "btn btn-block btn-lg btn-primary" }))))));
 };
 
 
@@ -18637,10 +18643,15 @@ exports.LoginView = function (_a) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var hyperapp_1 = __webpack_require__(0);
-exports.LayoutMixin = function (View) {
+exports.LayoutMixin = function (View, _a) {
+    var setView = _a.setView;
     return (hyperapp_1.h("div", null,
-        hyperapp_1.h("h1", null, "FrontMen Pool Cafe"),
-        View));
+        hyperapp_1.h("nav", { class: "navbar navbar-dark bg-dark" },
+            hyperapp_1.h("a", { class: "navbar-brand", href: "#", onclick: function (ev) {
+                    ev.preventDefault();
+                    setView('overview');
+                } }, "FrontMen Pool Cafe")),
+        hyperapp_1.h("div", { id: "app", class: "container" }, View)));
 };
 
 
