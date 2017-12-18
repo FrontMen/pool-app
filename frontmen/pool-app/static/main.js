@@ -18580,7 +18580,7 @@ exports.Player = function (_a) {
             player.name,
             " - ",
             player.score),
-        hyperapp_1.h("ul", null, player.matches ? Matches({ player: player, players: players }) : 'Nog geen games')));
+        hyperapp_1.h("ul", { class: "list-group" }, player.matches ? Matches({ player: player, players: players }) : 'Nog geen games')));
 };
 var Matches = function (_a) {
     var player = _a.player, players = _a.players;
@@ -18590,14 +18590,14 @@ var Matches = function (_a) {
 };
 var Match = function (_a) {
     var match = _a.match, players = _a.players;
-    return (hyperapp_1.h("li", { key: match.matchId },
-        won(match),
+    var badgeClass = "badge badge-" + (won(match) ? 'success' : 'secondary') + " badge-pill";
+    return (hyperapp_1.h("li", { class: "list-group-item d-flex justify-content-between align-items-center", key: match.matchId },
+        won(match) ? 'Gewonnen' : 'Verloren',
         " van ",
         getPlayer(match.opponent, players).name,
-        ": ",
-        match.diff));
+        hyperapp_1.h("span", { class: badgeClass }, match.diff)));
 };
-var won = function (match) { return (+match.diff > 0 ? 'Gewonnen' : 'Verloren'); };
+var won = function (match) { return (+match.diff > 0); };
 var getPlayer = function (id, players) { return lodash_1.find(players, { _id: id }); };
 
 
