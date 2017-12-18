@@ -1,5 +1,9 @@
 import { h } from 'hyperapp';
 
-export const Messages = ({ messages }) => {
-  return <ul>{messages.map(m => <li>{m}</li>)}</ul>;
-};
+export const Messages = ({ messages }) => messages.map(Message);
+
+const Message = msg => (
+  <div class="alert alert-secondary" role="alert">
+    {msg}
+  </div>
+);

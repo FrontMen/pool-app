@@ -1,3 +1,7 @@
 /node_modules
 env.json
+.DS_Store
+npm-debug.log*
+dist
 *.log
+yarn.lock

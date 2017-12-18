@@ -96,10 +96,13 @@ const appActions = app(
               player: find(state.players, { _id: state.view.payload }),
               setView: actions.setView,
               players: state.players,
-            })
+            }),
+            { setView: actions.setView }
           );
         case 'login':
-          return LayoutMixin(LoginView({ setView: actions.setView }));
+          return LayoutMixin(LoginView({ setView: actions.setView }), {
+            setView: actions.setView,
+          });
         case 'overview':
         default:
           return LayoutMixin(
@@ -117,7 +120,8 @@ const appActions = app(
                 setMessage: actions.setMessage,
               })}
               {Messages({ messages: state.messages })}
-            </div>
+            </div>,
+            { setView: actions.setView }
           );
       }
     },
