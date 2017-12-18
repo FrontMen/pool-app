@@ -1,6 +1,6 @@
 import { h } from 'hyperapp';
 
-export const LoginView = ({ setView }) => {
+export const LoginView = ({ setView, login }) => {
   return (
     <div class="row">
       <div class="col-12">
@@ -9,8 +9,11 @@ export const LoginView = ({ setView }) => {
           onchange="{}"
           onsubmit={e => {
             e.preventDefault();
-            // TODO: properly login
-            setView('overview');
+            if (e.target.email.value && e.target.token.value)
+              login({
+                email: e.target.email.value,
+                token: e.target.token.value,
+              });
           }}
         >
           <div class="form-group">
@@ -24,11 +27,12 @@ export const LoginView = ({ setView }) => {
             />
           </div>
           <div class="form-group">
-            <label for="password">Password</label>
+            <label for="password">Token</label>
             <input
-              id="password"
-              name="password"
-              type="password"
+              id="token"
+              name="token"
+              type="text"
+              placeholder="928374"
               class="form-control"
             />
           </div>

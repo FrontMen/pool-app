@@ -1,7 +1,7 @@
 import { h } from 'hyperapp';
 
 export const Overview = ({ state, actions }) => (
-  <div class="row">
+  <div class="row" oncreate={actions.fetchGames}>
     <div class="col-12">
       <h3>Ranking</h3>
       <List

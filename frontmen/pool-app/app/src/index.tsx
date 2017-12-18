@@ -1,6 +1,7 @@
 import { app, h } from 'hyperapp';
 import * as _debug from 'debug';
 import { find, orderBy } from 'lodash';
+import { decode } from 'jsonwebtoken';
 
 const debug = _debug('app:index');
 
@@ -17,13 +18,13 @@ import { LayoutMixin } from './application/Layout';
 const appActions = app(
   {
     actions: {
-      init: () => ({
+      stateInit: () => ({
         players: [],
         game: { player1: '', win: '', player2: '' },
         messages: [],
         newUser: { name: '', email: '' },
         view: {
-          name: 'overview',
+          name: 'login',
           payload: {},
         },
       }),
@@ -82,6 +83,22 @@ const appActions = app(
       setView: ({ name, payload }) => {
         return { view: { name, payload } };
       },
+      login: ({ email, token }) => state => actions => {
+        fetch(`loginUser/?email=${email}&token=${token}`)
+          .then(r => r.json())
+          .then(r => {
+            if (r.success) {
+              localStorage.setItem('pool-app-jwt', r.token);
+              actions.setJwt(r.token);
+              actions.setView({ name: 'overview' });
+            } else {
+              actions.setMessage('Login incorrect');
+            }
+          });
+      },
+      setJwt: token => {
+        return { user: decode(token), token: token };
+      },
     },
     view: (state: any) => (actions: any) => {
       debug(
@@ -89,6 +106,18 @@ const appActions = app(
         state.view.name,
         state.view.payload
       );
+
+      if (!state.user || state.user.exp < new Date().getTime()/1000) {
+        debug('user not authenticated or token expired');
+        return LayoutMixin(
+          LoginView({ setView: actions.setView, login: actions.login }),
+          {
+            setView: actions.setView,
+            state,
+          }
+        );
+      }
+
       switch (state.view.name) {
         case 'player':
           return LayoutMixin(
@@ -97,17 +126,12 @@ const appActions = app(
               setView: actions.setView,
               players: state.players,
             }),
-            { setView: actions.setView }
+            { setView: actions.setView, state }
           );
-        case 'login':
-          return LayoutMixin(LoginView({ setView: actions.setView }), {
-            setView: actions.setView,
-          });
         case 'overview':
         default:
           return LayoutMixin(
             <div>
-              {ReduxDevTools({ state })}
               {Overview({
                 state,
                 actions,
@@ -121,7 +145,7 @@ const appActions = app(
               })}
               {Messages({ messages: state.messages })}
             </div>,
-            { setView: actions.setView }
+            { setView: actions.setView, state }
           );
       }
     },
@@ -129,5 +153,6 @@ const appActions = app(
   document.getElementById('app')
 );
 
-appActions.init();
-appActions.fetchGames();
+appActions.stateInit();
+const token = localStorage.getItem('pool-app-jwt');
+if (token) appActions.setJwt(token);
