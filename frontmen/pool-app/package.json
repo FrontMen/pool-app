@@ -1,6 +1,6 @@
 {
   "name": "pool-app",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "author": "frontmen <albert@frontmen.com>",
   "main": "f/main/index.js",
@@ -50,6 +50,7 @@
     "awesome-typescript-loader": "^3.4.1",
     "concurrently": "^3.5.1",
     "lib.cli": "^4.0.1",
+    "pre-push": "^0.1.1",
     "source-map-loader": "^0.2.3",
     "ts-loader": "^3.2.0",
     "typescript": "^2.6.2",
