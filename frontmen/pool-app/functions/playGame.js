@@ -22,7 +22,12 @@ const playGame = (db, player1, win, player2, callback) => {
     db.collection('users').findOne({ name: player1 }, (err, $player1) => {
       db.collection('users').findOne({ name: player2 }, (err, $player2) => {
         if (!$player1 || !player2) {
-          return callback(err, `Player(s) ${!$player1 ? player1 : ''} ${!$player2 ? player2 : ''} not found`);
+          return callback(
+            err,
+            `Player(s) ${!$player1 ? player1 : ''} ${!$player2
+              ? player2
+              : ''} not found`
+          );
         }
         // calculate new scores
         const newScores = calculateNewElo($player1.score, win, $player2.score);
@@ -38,29 +43,32 @@ const playGame = (db, player1, win, player2, callback) => {
               opponent: $player2,
               playerScore: newScores.p1score,
               oppScore: newScores.p2score,
-              matchId
+              matchId,
             }),
           },
         }, (err, result) => {
-          return callback(err, result);
-        });
-
-        // save match
-        // save new score
-        db.collection('users').updateOne({ _id: new ObjectID($player2._id) }, {
-          $set: { score: newScores.p2score },
-          $push: {
-            matches: createMatch({
-              player: $player2,
-              win: !win,
-              opponent: $player1,
-              playerScore: newScores.p2score,
-              oppScore: newScores.p1score,
-              matchId
-            }),
-          },
-        }, (err, result) => {
-          return callback(err, result);
+          if (err) {
+            return callback(err, result);
+          }
+          // save match
+          // save new score
+          db.collection('users').updateOne({
+            _id: new ObjectID($player2._id),
+          }, {
+            $set: { score: newScores.p2score },
+            $push: {
+              matches: createMatch({
+                player: $player2,
+                win: !win,
+                opponent: $player1,
+                playerScore: newScores.p2score,
+                oppScore: newScores.p1score,
+                matchId,
+              }),
+            },
+          }, (err, result) => {
+            return callback(err, result);
+          });
         });
       });
     });
@@ -78,9 +86,16 @@ var calculateNewElo = (p1score, win, p2score) => {
   return { p1score, p2score };
 };
 
-var createMatch = ({ player, win, opponent, playerScore, oppScore, matchId }) => {
+var createMatch = ({
+  player,
+  win,
+  opponent,
+  playerScore,
+  oppScore,
+  matchId,
+}) => {
   return {
-    matchId, 
+    matchId,
     player: player._id,
     opponent: opponent._id,
     date: Date.now(),
