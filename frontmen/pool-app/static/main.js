@@ -44835,7 +44835,7 @@ exports.Game = function (_a) {
 };
 var FancyRadio = function (_a) {
     var name = _a.name, value = _a.value, label = _a.label, radioValue = _a.radioValue;
-    return (hyperapp_1.h("label", { class: radioValue === value ? 'btn btn-secondary active' : 'btn btn-secondary' },
+    return (hyperapp_1.h("label", { class: radioValue === value ? 'btn btn-success active' : 'btn btn-success' },
         hyperapp_1.h("input", { type: "radio", name: name, autocomplete: "off", value: value }),
         label));
 };

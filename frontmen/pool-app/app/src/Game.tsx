@@ -66,7 +66,7 @@ export const Game = ({
 const FancyRadio = ({ name, value, label, radioValue }) => (
   <label
     class={
-      radioValue === value ? 'btn btn-secondary active' : 'btn btn-secondary'
+      radioValue === value ? 'btn btn-success active' : 'btn btn-success'
     }
   >
     <input type="radio" name={name} autocomplete="off" value={value} />
