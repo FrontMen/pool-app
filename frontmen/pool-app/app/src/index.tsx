@@ -27,6 +27,7 @@ const appActions = app(
           name: 'login',
           payload: {},
         },
+        showNewPlayer: false,
       }),
       fetchGames: _ => state => actions => {
         fetch('getUsers/')
@@ -99,6 +100,10 @@ const appActions = app(
       setJwt: token => {
         return { user: decode(token), token: token };
       },
+      toggleShowNewPlayer: _ => prevState => ({
+        newUser: { name: '', email: '' },
+        showNewPlayer: !prevState.showNewPlayer,
+      }),
     },
     view: (state: any) => (actions: any) => {
       debug(
@@ -107,7 +112,7 @@ const appActions = app(
         state.view.payload
       );
 
-      if (!state.user || state.user.exp < new Date().getTime()/1000) {
+      if (!state.user || state.user.exp < new Date().getTime() / 1000) {
         debug('user not authenticated or token expired');
         return LayoutMixin(
           LoginView({ setView: actions.setView, login: actions.login }),
@@ -132,6 +137,7 @@ const appActions = app(
         default:
           return LayoutMixin(
             <div>
+              {Messages({ messages: state.messages })}
               {Overview({
                 state,
                 actions,
@@ -143,7 +149,6 @@ const appActions = app(
                 gameFormSubmit: actions.gameFormSubmit,
                 setMessage: actions.setMessage,
               })}
-              {Messages({ messages: state.messages })}
             </div>,
             { setView: actions.setView, state }
           );

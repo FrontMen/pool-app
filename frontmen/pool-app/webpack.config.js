@@ -1,14 +1,20 @@
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   entry: './app/src/index.tsx',
   watch: true,
+  watchOptions: {
+    aggregateTimeout: 100,
+    poll: 500,
+    ignored: /node_modules/,
+  },
   output: {
     filename: 'main.js',
     path: __dirname + '/static',
   },
 
   // Enable sourcemaps for debugging webpack's output.
-  // devtool: 'source-map',
+  devtool: 'source-map',
 
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
@@ -24,4 +30,5 @@ module.exports = {
       // { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
     ],
   },
+  plugins: [new UglifyJSPlugin()],
 };
