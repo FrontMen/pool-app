@@ -1,6 +1,6 @@
 {
   "name": "pool-app",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "",
   "author": "frontmen <albert@frontmen.com>",
   "main": "f/main/index.js",
