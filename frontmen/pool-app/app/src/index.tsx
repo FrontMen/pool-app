@@ -67,9 +67,12 @@ const appActions = app(
         fetch(
           `createUser/?name=${newUser.name}&email=${newUser.email}`
         ).then(response => {
-          if (!response.ok) throw new Error('error in newUser');
+          if (!response.ok) {
+            actions.setMessage('error registering');
+          }
           response.text().then(t => actions.setMessage(t));
           actions.fetchGames();
+          actions.toggleShowNewPlayer();
         });
       },
       setMessage: message => state => actions => {
@@ -137,6 +140,7 @@ const appActions = app(
         default:
           return LayoutMixin(
             <div>
+              {/* <pre>{JSON.stringify(state, null, 2)}</pre> */}
               {Messages({ messages: state.messages })}
               {Overview({
                 state,
