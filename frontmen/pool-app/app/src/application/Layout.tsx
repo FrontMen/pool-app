@@ -19,7 +19,7 @@ export const LayoutMixin = (View, { setView, state }) => {
         </a>
       </nav>
       <div id="app" class="container">
-        {Messages({ messages: state.messages })}
+        <Messages messages={state.messages }/>
         {View}
       </div>
     </div>

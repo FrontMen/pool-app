@@ -14,8 +14,10 @@ export const LoginView = ({ setView, login, setMessage }) => {
                 email: e.target.email.value.toLowerCase(),
                 token: e.target.token.value.toLowerCase(),
               });
+            } else {
+              setMessage('email of token niet ingevuld');
             }
-            setMessage('email of token niet ingevuld');
+            
           }}
         >
           <div class="form-group">
