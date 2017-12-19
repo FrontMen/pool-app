@@ -9,7 +9,6 @@ const debug = _debug('app:index');
 import { Overview } from './Overview';
 import { Game } from './Game';
 import { ReduxDevTools } from './application/ReduxDevTools';
-import { Messages } from './Messages';
 import { Player } from './Player';
 import { LoginView } from './Login';
 import { LayoutMixin } from './application/Layout';
@@ -98,7 +97,8 @@ const appActions = app(
             } else {
               actions.setMessage('Login incorrect');
             }
-          });
+          })
+          .catch(err => actions.setMessage('Login incorrect'));
       },
       setJwt: token => {
         return { user: decode(token), token: token };
@@ -114,15 +114,20 @@ const appActions = app(
         state.view.name,
         state.view.payload
       );
+      const defaultLayoutActions = {
+        setView: actions.setView,
+        state,
+      };
 
       if (!state.user || state.user.exp < new Date().getTime() / 1000) {
         debug('user not authenticated or token expired');
         return LayoutMixin(
-          LoginView({ setView: actions.setView, login: actions.login }),
-          {
-            setView: actions.setView,
-            state,
-          }
+          <LoginView
+            setView={actions.setView}
+            login={actions.login}
+            setMessage={actions.setMessage}
+          />,
+          defaultLayoutActions
         );
       }
 
@@ -134,14 +139,13 @@ const appActions = app(
               setView: actions.setView,
               players: state.players,
             }),
-            { setView: actions.setView, state }
+            defaultLayoutActions
           );
         case 'overview':
         default:
           return LayoutMixin(
             <div>
               {/* <pre>{JSON.stringify(state, null, 2)}</pre> */}
-              {Messages({ messages: state.messages })}
               {Overview({
                 state,
                 actions,
@@ -154,7 +158,7 @@ const appActions = app(
                 setMessage: actions.setMessage,
               })}
             </div>,
-            { setView: actions.setView, state }
+            defaultLayoutActions
           );
       }
     },

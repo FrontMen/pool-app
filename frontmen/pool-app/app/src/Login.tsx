@@ -1,6 +1,6 @@
 import { h } from 'hyperapp';
 
-export const LoginView = ({ setView, login }) => {
+export const LoginView = ({ setView, login, setMessage }) => {
   return (
     <div class="row">
       <div class="col-12">
@@ -9,11 +9,13 @@ export const LoginView = ({ setView, login }) => {
           onchange="{}"
           onsubmit={e => {
             e.preventDefault();
-            if (e.target.email.value && e.target.token.value)
+            if (e.target.email.value && e.target.token.value) {
               login({
-                email: e.target.email.value,
-                token: e.target.token.value,
+                email: e.target.email.value.toLowerCase(),
+                token: e.target.token.value.toLowerCase(),
               });
+            }
+            setMessage('email of token niet ingevuld');
           }}
         >
           <div class="form-group">

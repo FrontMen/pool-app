@@ -10,6 +10,13 @@ module.exports = (email, token, context, callback) => {
   try {
     return connectDb(db =>
       getUser(db, email, (err, user) => {
+        if(!user) {
+          return callback(
+            null,
+            { success: false },
+            { 'Content-Type': 'application/json' }
+          ); 
+        }
         const isValidToken = speakeasy.totp.verify({
           secret: user.otpSecret,
           encoding: 'base32',

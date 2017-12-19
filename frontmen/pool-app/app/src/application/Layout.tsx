@@ -1,5 +1,6 @@
 import { h } from 'hyperapp';
 import { ReduxDevTools } from './ReduxDevTools';
+import { Messages } from '../Messages';
 
 export const LayoutMixin = (View, { setView, state }) => {
   return (
@@ -11,13 +12,14 @@ export const LayoutMixin = (View, { setView, state }) => {
           href="#"
           onclick={(ev: MouseEvent) => {
             ev.preventDefault();
-            setView({name: 'overview'});
+            setView({ name: 'overview' });
           }}
         >
           FrontMen Pool Cafe
         </a>
       </nav>
       <div id="app" class="container">
+        {Messages({ messages: state.messages })}
         {View}
       </div>
     </div>
