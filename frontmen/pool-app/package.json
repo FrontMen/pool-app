@@ -1,9 +1,13 @@
 {
   "name": "pool-app",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "author": "frontmen <albert@frontmen.com>",
   "main": "f/main/index.js",
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com:FrontMen/stdlib.git"
+  },
   "scripts": {
     "start": "NODE_ENV=production concurrently \"npm run build\" \"npm run start:stdlib\"",
     "start:stdlib": "lib http",
@@ -24,6 +28,7 @@
     "hyperapp": "^0.16.2",
     "jsonwebtoken": "^8.1.0",
     "jwt-decode": "^2.2.0",
+    "lib": "^3.0.1",
     "lodash": "^4.17.4",
     "mime": "^2.0.3",
     "mongodb": "^3.0.0-rc0",
