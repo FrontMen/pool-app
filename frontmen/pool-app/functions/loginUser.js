@@ -1,6 +1,7 @@
 const connectDb = require('../lib/connectDb');
 const speakeasy = require('speakeasy');
 const jwt = require('jsonwebtoken');
+const configuration = require('../lib/configuration');
 
 /**
  * @param {string} email 
@@ -10,12 +11,12 @@ module.exports = (email, token, context, callback) => {
   try {
     return connectDb(db =>
       getUser(db, email, (err, user) => {
-        if(!user) {
+        if (!user) {
           return callback(
             null,
             { success: false },
             { 'Content-Type': 'application/json' }
-          ); 
+          );
         }
         const isValidToken = speakeasy.totp.verify({
           secret: user.otpSecret,
@@ -30,7 +31,7 @@ module.exports = (email, token, context, callback) => {
               name: user.name,
               email: user.email,
             },
-            process.env['JWT_SECRET'],
+            configuration.JWT_SECRET,
             { expiresIn: '21d' }
           );
 

@@ -1,4 +1,5 @@
 const connectDb = require('../lib/connectDb');
+const config = require('../lib/configuration');
 
 module.exports = (callback) => {
   try {

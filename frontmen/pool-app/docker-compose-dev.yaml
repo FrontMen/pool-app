@@ -1,0 +1,28 @@
+version: "2"
+services:
+  node:
+    image: "node:8"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./:/home/node/app
+    expose:
+      - "8170"
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+    ports: 
+      - 8170:8170
+    command: "npm run start"
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+    volumes:
+      - ./data/db:/data/db

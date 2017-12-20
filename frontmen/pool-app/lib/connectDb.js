@@ -1,9 +1,10 @@
 const MongoClient = require('mongodb').MongoClient;
+const configuration = require('../lib/configuration');
 
 let cache;
 
 module.exports = (cb) => {
-  let uri = process.env['MONGO_URI'];
+  let uri = configuration.MONGO_URI;
   if (!cache) {
     MongoClient.connect(uri, (error, client) => {
       if (error) {
