@@ -1,9 +1,31 @@
 import { h } from 'hyperapp';
 
-export const Overview = ({ state, actions }) => (
+export const Leaderboard = ({ state, actions }) => (
   <div class="row" oncreate={actions.fetchGames}>
     <div class="col-12">
-      <h3>Ranking</h3>
+      <div class="header">
+        <h1 class="header__title">leaderboard</h1>
+        <div class="profile">
+          <div class="profile__text">
+            <span>2</span>th
+          </div>
+          <div class="profile__text">
+            <img
+              class="profile__icon"
+              src={`https://robohash.org/${state.user.name}`}
+            />
+          </div>
+
+          <div class="profile__text">
+            <span>{state.user.score || 1500}</span>pt
+          </div>
+        </div>
+      </div>
+      <div class="filters">
+        <div class="filters__item filters__item--active">overall</div>
+        <div class="filters__item">frontmen</div>
+        <div class="filters__item">jpoint</div>
+      </div>
       <List
         players={state.players}
         newUser={state.newUser}
@@ -12,6 +34,7 @@ export const Overview = ({ state, actions }) => (
         setView={actions.setView}
         showNewPlayer={state.showNewPlayer}
         toggleShowNewPlayer={actions.toggleShowNewPlayer}
+        user={state.user}
       />
     </div>
   </div>
@@ -20,6 +43,7 @@ export const Overview = ({ state, actions }) => (
 export const List = ({
   players,
   newUser,
+  user,
   newUserFormChange,
   newUserFormSubmit,
   setView,
@@ -35,26 +59,34 @@ export const List = ({
         toggleShowNewPlayer
       )
     ) : (
-      [
-        players.map((p, idx) => (
-          <li
-            key={p._id}
-            class="list-group-item d-flex justify-content-between align-items-center"
-            onclick={e => {
-              setView({ name: 'player', payload: p._id });
-            }}
-          >
-            {p.name}
-            <span class={getBadgeClass(idx)}>{p.score}</span>
-          </li>
-        )),
+        <div class="list">
+        {players.map((p, idx) => {
+          const playerClass = `list__item ${p._id === user._id && 'list__item--active'}`
+          return (
+            <div
+              onclick={e => {
+                setView({ name: 'player', payload: p._id });
+              }}
+              class={playerClass}
+            >
+              <span class="list__text">{idx + 1}</span>
+              <img
+                class="profile__icon profile__icon--small"
+                src={`https://robohash.org/${p.name}`}
+              />
+              <span class="list__text list__text--regular">{p.name}</span>
+              <span class="list__text">{p.score}</span>
+            </div>
+          );
+        })}
         <input
           type="button"
           value="Nieuwe speler"
           class="btn btn-block btn-xs"
           onclick={toggleShowNewPlayer}
-        />,
-      ]
+        />
+      </div>
+        
     )}
   </ul>
 );
