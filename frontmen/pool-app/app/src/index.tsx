@@ -94,6 +94,7 @@ const appActions = app(
               localStorage.setItem('pool-app-jwt', r.token);
               actions.setJwt(r.token);
               actions.setView({ name: 'overview' });
+              actions.fetchGames();
             } else {
               actions.setMessage('Login incorrect');
             }
