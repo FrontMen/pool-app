@@ -65,7 +65,9 @@ body {
 .profile__text > span {
   font-size: 1.8em;
 }
-
+.list {
+  background-color: #fff;
+}
 .list__item {
   display: flex;
   justify-content: space-between;
