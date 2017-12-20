@@ -6,7 +6,7 @@ import { decode } from 'jsonwebtoken';
 const debug = _debug('app:index');
 
 // Types
-import { Overview } from './Overview';
+import { Leaderboard } from './Leaderboard';
 import { Game } from './Game';
 import { ReduxDevTools } from './application/ReduxDevTools';
 import { Player } from './Player';
@@ -134,30 +134,27 @@ const appActions = app(
       switch (state.view.name) {
         case 'player':
           return LayoutMixin(
+            [
             Player({
               player: find(state.players, { _id: state.view.payload }),
               setView: actions.setView,
               players: state.players,
             }),
+            Game({
+              players: state.players,
+              player: find(state.players, { _id: state.view.payload }), 
+              gameFormChange: actions.gameFormChange,
+              game: state.game,
+              gameFormSubmit: actions.gameFormSubmit,
+              setMessage: actions.setMessage,
+            })
+          ],
             defaultLayoutActions
           );
         case 'overview':
         default:
           return LayoutMixin(
-            <div>
-              {/* <pre>{JSON.stringify(state, null, 2)}</pre> */}
-              {Overview({
-                state,
-                actions,
-              })}
-              {Game({
-                players: state.players,
-                gameFormChange: actions.gameFormChange,
-                game: state.game,
-                gameFormSubmit: actions.gameFormSubmit,
-                setMessage: actions.setMessage,
-              })}
-            </div>,
+            Leaderboard({ state, actions}),
             defaultLayoutActions
           );
       }

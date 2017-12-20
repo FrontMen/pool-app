@@ -2,6 +2,7 @@ import { h } from 'hyperapp';
 
 export const Game = ({
   players,
+  player,
   gameFormChange,
   game,
   gameFormSubmit,
@@ -19,12 +20,13 @@ export const Game = ({
         <h3>Game</h3>
         <div class="form-group">
           <label for="playerSelect">Speler</label>
-          <select id="playerSelect" name="player" class="form-control">
+          <input type="text" name="player" value={player.name} disabled />
+          {/* <select id="playerSelect" name="player" class="form-control">
             <option disabled selected={!game.player1 || !game.player1.name}>
               Selecteer
             </option>
-            {players.map(p => <option value={p.name}>{p.name}</option>)}
-          </select>
+            {players.map(p => <option value={p.name} selected={p._id === user.id ? "selected": ""}>{p.name}</option>)}
+          </select> */}
         </div>
         <div class="btn-group btn-block" data-toggle="buttons">
           <FancyRadio
