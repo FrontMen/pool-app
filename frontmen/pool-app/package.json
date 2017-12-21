@@ -32,7 +32,6 @@
     "lodash": "^4.17.4",
     "mime": "^2.0.3",
     "mongodb": "^3.0.0-rc0",
-    "node-qrcode": "0.0.4",
     "pre-push": "^0.1.1",
     "qrcode": "^1.0.0",
     "sendmail": "^1.2.0",

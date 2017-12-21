@@ -3,15 +3,15 @@ const sendmail = require('sendmail');
 /**
  * Send mail 
  */
-module.exports = ({ from, to, subject, html, path }, context, callback) => {
-  const attachments = [{ path, cid: 'imageblaat' }];
+module.exports = ({ from, to, subject, html }, context, callback) => {
+  // const attachments = [{ path, cid: 'imageblaat' }];
   sendmail()(
     {
       from,
       to,
       subject,
       html,
-      attachments,
+      // attachments,
       headers: {
         'Content-Transfer-Encoding': 'quoted-printable',
       },
