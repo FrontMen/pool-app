@@ -2,21 +2,8 @@ const sendmail = require('sendmail');
 
 /**
  * Send mail 
- * @param {string} from 
- * @param {string} to 
- * @param {string} subject 
- * @param {string} html 
- * @param {string} path 
  */
-module.exports = (
-  from,
-  to,
-  subject,
-  html,
-  path,
-  context,
-  callback
-) => {
+module.exports = ({ from, to, subject, html, path }, context, callback) => {
   const attachments = [{ path, cid: 'imageblaat' }];
   sendmail()(
     {
@@ -26,8 +13,8 @@ module.exports = (
       html,
       attachments,
       headers: {
-        'Content-Transfer-Encoding': 'quoted-printable'
-      }
+        'Content-Transfer-Encoding': 'quoted-printable',
+      },
     },
     (err, reply) => {
       err

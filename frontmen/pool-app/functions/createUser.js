@@ -4,15 +4,10 @@ const connectDb = require('../lib/connectDb');
 const speakeasy = require('speakeasy');
 const QRCode = require('qrcode');
 
-let cacheDb = null;
-
 /**
  * @returns {any}
  */
-module.exports = (context, callback) => {
-  let name = context.params.name;
-  let email = context.params.email;
-
+module.exports = ({ name, email }, callback) => {
   if (!name || !email) {
     return callback('', 'Cannot Register');
   }
@@ -51,7 +46,8 @@ const createUser = (db, user, secret, context, callback) => {
 
 const sendCreateUserEmail = (email, secret, context) => {
   QRCode.toDataURL(secret.otpauth_url, function(err, data_url) {
-    const sendMailFn = lib[`${context.service.identifier}.sendMail`];
+    // TODO: fix context.service.identifier for expressjs
+    const sendMailFn = require('./sendMail');
     const from = 'pool-app@frontmen.nl';
     const to = email;
     const subject = 'FrontMen Pool Cafe';
@@ -72,7 +68,7 @@ const sendCreateUserEmail = (email, secret, context) => {
       </body>
       </html>`;
 
-    sendMailFn(from, to, subject, html, data_url, (err, result) => {
+    sendMailFn({ from, to, subject, html, path: data_url }, (err, result) => {
       if (err) {
         throw Error(err);
       }

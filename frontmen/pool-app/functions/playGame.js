@@ -1,23 +1,17 @@
-//@ts-check
 const ObjectID = require('mongodb').ObjectID;
 const connectDb = require('../lib/connectDb');
 const EloRank = require('elo-rank');
 var elo = new EloRank();
 
-/**
- * @param {string} player1 
- * @param {boolean} win 
- * @param {string} player2 
- */
-module.exports = (player1, win, player2, callback) => {
+module.exports = ({ player1, win, player2 }, callback) => {
   try {
-    return connectDb(db => playGame(db, player1, win, player2, callback));
+    return connectDb(db => playGame(db, { player1, win, player2 }, callback));
   } catch (error) {
     return callback(error);
   }
 };
 
-const playGame = (db, player1, win, player2, callback) => {
+const playGame = (db, { player1, win, player2 }, callback) => {
   connectDb(db => {
     db.collection('users').findOne({ name: player1 }, (err, $player1) => {
       db.collection('users').findOne({ name: player2 }, (err, $player2) => {

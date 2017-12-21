@@ -3,14 +3,10 @@ const speakeasy = require('speakeasy');
 const jwt = require('jsonwebtoken');
 const configuration = require('../lib/configuration');
 
-/**
- * @param {string} email 
- * @param {string} token 
- */
-module.exports = (email, token, context, callback) => {
+module.exports = ({ email, token }, context, callback) => {
   try {
     return connectDb(db =>
-      getUser(db, email, (err, user) => {
+      getUser(db, { email }, (err, user) => {
         if (!user) {
           return callback(
             null,
@@ -54,8 +50,8 @@ module.exports = (email, token, context, callback) => {
   }
 };
 
-const getUser = (db, email, callback) => {
+const getUser = (db, { email }, callback) => {
   connectDb(db => {
-    return db.collection('users').findOne({ email: email }, callback);
+    return db.collection('users').findOne({ email }, callback);
   });
 };

@@ -19,13 +19,25 @@ Object.assign(process.env, env);
 
 app.use('/', express.static('static'));
 
-app.get('/getUsers', (req, res, err) => {
-  var fn = require('./functions/getUsers');
-  fn((err, data) => {
-    res.send(data);
-    console.error(err);
+const createEndpoint = pathName => {
+  app.get(`/${pathName}`, (req, res, err) => {
+    var fn = require(`./functions/${pathName}`);
+    fn(req.query, (err, data) => {
+      res.send(data);
+      err && console.error(err);
+    });
   });
-});
+};
+
+[
+  'getUsers',
+  'createUser',
+  'deleteAllUsers',
+  'deleteUser',
+  'loginUser',
+  'playGame',
+  'updateUser',
+].forEach(createEndpoint);
 
 app.listen(port, () => {
   console.log(`listening on port ${port}`);

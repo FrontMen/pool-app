@@ -1,7 +1,7 @@
 const connectDb = require('../lib/connectDb');
 const config = require('../lib/configuration');
 
-module.exports = (callback) => {
+module.exports = (_, callback) => {
   try {
     return connectDb(db => getUsers(db, callback));
   } catch (error) {

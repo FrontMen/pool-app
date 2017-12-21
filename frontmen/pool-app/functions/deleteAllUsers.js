@@ -1,10 +1,7 @@
 const ObjectID = require('mongodb').ObjectID;
 const connectDb = require('../lib/connectDb');
 
-/**
- * @param {string} id 
- */
-module.exports = (id, context, callback) => {
+module.exports = ({ id }, callback) => {
   try {
     if (id !== '987654321') {
       throw new Error('unauthorized');
