@@ -1,6 +1,6 @@
 {
   "name": "pool-app",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
   "author": "frontmen <albert@frontmen.com>",
   "main": "f/main/index.js",
@@ -11,10 +11,12 @@
   "scripts": {
     "start": "NODE_ENV=production concurrently \"npm run build\" \"npm run start:stdlib\"",
     "start:stdlib": "lib http",
-    "build": "webpack"
+    "build": "webpack",
+    "docker:start": "docker-compose -f docker-compose-dev.yaml up",
+    "docker:build": "docker build -t registry.wieisalbert.nu/alber70g/frontmen-pool-app:0.0.6 .",
+    "docker:release": "docker push registry.wieisalbert.nu/alber70g/frontmen-pool-app:0.0.6"
   },
   "dependencies": {
-    "@types/debug": "0.0.30",
     "axios": "^0.17.1",
     "cross-env": "^5.1.1",
     "debug": "^3.1.0",
@@ -22,8 +24,6 @@
     "elo-rank": "^1.0.3",
     "file-loader": "^0.9.0",
     "fs-extra": "^1.0.0",
-    "fuse-box": "^2.5.0-beta.1",
-    "fuse-box-typechecker": "^2.6.3",
     "html-loader": "^0.4.4",
     "hyperapp": "^0.16.2",
     "jsonwebtoken": "^8.1.0",
@@ -51,9 +51,13 @@
     }
   },
   "devDependencies": {
+    "@types/debug": "0.0.30",
+    "@types/express": "^4.11.0",
     "@types/lodash-es": "^4.17.0",
     "awesome-typescript-loader": "^3.4.1",
     "concurrently": "^3.5.1",
+    "fuse-box": "^2.5.0-beta.1",
+    "fuse-box-typechecker": "^2.6.3",
     "lib.cli": "^4.0.1",
     "pre-push": "^0.1.1",
     "source-map-loader": "^0.2.3",
