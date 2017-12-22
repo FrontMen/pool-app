@@ -9,6 +9,7 @@
   },
   "scripts": {
     "start": "concurrently \"docker-compose -f docker-compose-dev.yaml up\" \"webpack\"",
+    "stop": "docker-compose -f docker-compose-dev.yaml down",
     "build": "webpack",
     "docker:release": "node ./scripts/docker-build-release.js"
   },
