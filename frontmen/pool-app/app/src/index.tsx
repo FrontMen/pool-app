@@ -34,9 +34,13 @@ const appActions = app(
           .then(actions.setPlayers);
       },
       gameFormSubmit: game => state => actions => {
-        fetch(
-          `playGame/?player1=${game.player1}&win=${game.win}&player2=${game.player2}`
-        ).then(response => {
+        fetch('game/', {
+          method: 'POST',
+          body: JSON.stringify(game),
+          headers: new Headers({
+            'Content-Type': 'application/json',
+          }),
+        }).then(response => {
           if (!response.ok) throw new Error('error in postGame');
           response.text().then(t => actions.setMessage(t));
           actions.fetchGames();

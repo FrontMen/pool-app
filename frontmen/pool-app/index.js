@@ -13,6 +13,7 @@ app.use('/', express.static('static'));
 // routes
 app.use('/users', require('./routes/users'));
 app.use('/authenticate', require('./routes/authentication'));
+app.use('/game', require('./routes/game'));
 
 const createEndpoint = pathName => {
   app.get(`/${pathName}`, (req, res, err) => {
@@ -24,9 +25,7 @@ const createEndpoint = pathName => {
   });
 };
 
-['deleteAllUsers', 'deleteUser', 'playGame', 'updateUser'].forEach(
-  createEndpoint
-);
+['deleteAllUsers', 'deleteUser'].forEach(createEndpoint);
 
 app.listen(port, err => {
   if (err) {
