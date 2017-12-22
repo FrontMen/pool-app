@@ -1,19 +1,13 @@
-FROM node:carbon
+FROM mhart/alpine-node:latest
 
 # Create app directory
-WORKDIR /usr/src/app
+WORKDIR /opt/app
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json ./
+# Copy source
+COPY . /opt/app
 
-# If you are building your code for production
-# RUN npm install
-RUN npm install --only=production
-
-# Bundle app source
-COPY . .
-
+# Expose port
 EXPOSE 8170
-CMD [ "npm", "start" ]
+
+# Install npm dependencies on server
+CMD npm install && node index.js

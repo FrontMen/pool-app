@@ -1,23 +1,12 @@
 version: "2"
 services:
   node:
-    image: "vps-kvm.wieisalbert.nu:5000/alber70g/frontmen-pool-app"
-    user: "node"
-    # working_dir: /home/node/app
-    # environment:
-    #   - NODE_ENV=production
-    # volumes:
-    #   - ./:/home/node/app
-    # expose:
-    #   - "8170"
-    # links:
-    #   - mongodb
+    image: "registry.wieisalbert.nu/alber70g/frontmen-pool-app:0.0.8"
+    links:
+      - mongodb
     depends_on:
       - mongodb
     ports: 
       - 8170:8170
-    # command: "npm run start"
   mongodb:
     image: mongo
-    ports:
-      - "27017:27017"

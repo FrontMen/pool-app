@@ -3,7 +3,7 @@ const app = express();
 const port = process.env.PORT || 8170;
 
 let mongo_prod;
-// mongo_prod = 'mongodb://mongodb:27017/pool-app';
+mongo_prod = 'mongodb://mongodb:27017/pool-app';
 
 const env = {
   MONGO_URI:
