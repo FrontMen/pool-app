@@ -7,6 +7,7 @@ const getUser = require('../functions/getUser');
 const getUsers = require('../functions/getUsers');
 const createUser = require('../functions/createUser');
 const updateUser = require('../functions/updateUser');
+const deleteUser = require('../functions/deleteUser');
 
 /* GET users listing. */
 router.get('/', (req, res, next) => {
@@ -32,6 +33,13 @@ router.post('/', (req, res, next) => {
 
 router.post('/:id', (req, res, next) => {
   updateUser({ id: req.params.id, update: req.body }, (err, data) => {
+    res.send(data);
+    err && console.error(err);
+  });
+});
+
+router.delete('/:id', (req, res, next) => {
+  deleteUser({ id: req.params.id }, (err, data) => {
     res.send(data);
     err && console.error(err);
   });
