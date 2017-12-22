@@ -1,6 +1,6 @@
 {
   "name": "pool-app",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "",
   "author": "frontmen <albert@frontmen.com>",
   "repository": {
@@ -10,7 +10,7 @@
   "scripts": {
     "start": "concurrently \"docker-compose -f docker-compose-dev.yaml up\" \"webpack\"",
     "build": "webpack",
-    "docker:release": "scripts/docker-build-release.sh"
+    "docker:release": "node ./scripts/docker-build-release.js"
   },
   "dependencies": {
     "axios": "^0.17.1",
