@@ -17,7 +17,6 @@ export const LoginView = ({ setView, login, setMessage }) => {
             } else {
               setMessage('email of token niet ingevuld');
             }
-            
           }}
         >
           <div class="form-group">
@@ -51,4 +50,25 @@ export const LoginView = ({ setView, login, setMessage }) => {
       </div>
     </div>
   );
+};
+export const login = ({ email, token }) => state => actions => {
+  fetch('/authenticate', {
+    method: 'POST',
+    body: JSON.stringify({ email, token }),
+    headers: new Headers({
+      'Content-Type': 'application/json',
+    }),
+  })
+    .then(r => r.json())
+    .then(r => {
+      if (r.success) {
+        localStorage.setItem('pool-app-jwt', r.token);
+        actions.setJwt(r.token);
+        actions.setView({ name: 'overview' });
+        actions.fetchGames();
+      } else {
+        actions.setMessage('Login incorrect');
+      }
+    })
+    .catch(err => actions.setMessage('Login incorrect'));
 };

@@ -1,29 +1,43 @@
 import { h } from 'hyperapp';
 import { orderBy, find } from 'lodash';
+import { Game } from './Game';
 
-export const Player = ({ player, players, setView }) => {
+export const Player = ({ state, actions, player }) => {
+  const { players, view, user } = state;
+  const { setView, setMessage, game } = actions;
   return (
-    <div class="row">
-      <div class="col-12">
-        <div class="text-center">
-          <img
-            src={`https://robohash.org/${player.name}`}
-            class="rounded"
-            alt={player.name}
-          />
-        </div>
+    <div>
+      <div class="row">
+        <div class="col-12">
+          <div class="text-center">
+            <img
+              src={`https://robohash.org/${player.name}`}
+              class="rounded"
+              alt={player.name}
+            />
+          </div>
 
-        <h3>
-          {player.name} - {player.score}
-        </h3>
-        <ul class="list-group">
-          {player.matches ? (
-            Matches({ player, players, setView })
-          ) : (
-            'Nog geen games'
-          )}
-        </ul>
+          <h3>
+            {player.name} - {player.score}
+          </h3>
+          <ul class="list-group">
+            {player.matches ? (
+              Matches({ player, players, setView })
+            ) : (
+              'Nog geen games'
+            )}
+          </ul>
+        </div>
       </div>
+      {state.user._id !== view.payload &&
+        Game({
+          players: players,
+          player: find(players, { _id: state.view.payload }),
+          gameFormChange: game.gameFormChange,
+          game: state.game,
+          gameFormSubmit: game.gameFormSubmit,
+          setMessage: setMessage,
+        })}
     </div>
   );
 };

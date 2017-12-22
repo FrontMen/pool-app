@@ -67,11 +67,33 @@ export const Game = ({
 
 const FancyRadio = ({ name, value, label, radioValue }) => (
   <label
-    class={
-      radioValue === value ? 'btn btn-success active' : 'btn btn-success'
-    }
+    class={radioValue === value ? 'btn btn-success active' : 'btn btn-success'}
   >
     <input type="radio" name={name} autocomplete="off" value={value} />
     {label}
   </label>
 );
+
+export const gameFormSubmit = game => state => actions => {
+  fetch('game/', {
+    method: 'POST',
+    body: JSON.stringify(game),
+    headers: new Headers({
+      'Content-Type': 'application/json',
+    }),
+  }).then(response => {
+    if (!response.ok) throw new Error('error in postGame');
+    response.text().then(t => actions.setMessage(t));
+    actions.fetchGames();
+  });
+};
+
+export const gameFormChange = payload => {
+  return {
+    game: {
+      player1: payload.currentTarget[0].value,
+      win: payload.currentTarget.win['value'] === 'win',
+      player2: payload.currentTarget[3].value,
+    },
+  };
+};
