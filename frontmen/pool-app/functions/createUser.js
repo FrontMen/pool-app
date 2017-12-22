@@ -3,16 +3,18 @@ const lib = require('lib');
 const connectDb = require('../lib/connectDb');
 const speakeasy = require('speakeasy');
 
+const allowedDomains = ['frontmen.nl', 'jpoint.nl', 'detesters.nl'];
+
 /**
  * @returns {any}
  */
 module.exports = ({ name, email }, callback) => {
   if (!name || !email) {
-    return callback('', 'Cannot Register');
+    return callback('', 'Cannot Register; missing parameters');
   }
-
-  if (email.indexOf('@frontmen.nl') === -1) {
-    return callback('', 'Cannot Register');
+  const domain = email.split('@')[1];
+  if (allowedDomains.indexOf(domain) === -1) {
+    return callback('', 'Cannot Register; you work for the wrong company!');
   }
 
   const secret = speakeasy.generateSecret({
@@ -56,7 +58,9 @@ const sendCreateUserEmail = ({ email, secret }) => {
           <br />
           https://frontmen.stdlib.com/pool-app/
           De One Time Passcode voor Google Authenticator om in te loggen: <br />
-          <img src="https://api.qrserver.com/v1/create-qr-code/?data=${encodeURI(secret.otpauth_url)}" /> <br />
+          <img src="https://api.qrserver.com/v1/create-qr-code/?data=${encodeURI(
+            secret.otpauth_url
+          )}" /> <br />
           Token: <a href="${secret.otpauth_url}">${secret.base32}</a> <br />
           Succes! <br />
           <br />

@@ -10,7 +10,7 @@ module.exports = {
   },
   output: {
     filename: 'main.js',
-    path: __dirname + '/static',
+    path: __dirname + '/static/js',
   },
 
   // Enable sourcemaps for debugging webpack's output.

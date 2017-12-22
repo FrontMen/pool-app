@@ -29,7 +29,7 @@ const appActions = app(
         showNewPlayer: false,
       }),
       fetchGames: _ => state => actions => {
-        fetch('getUsers/')
+        fetch('users/')
           .then(response => response.json())
           .then(actions.setPlayers);
       },
@@ -62,10 +62,14 @@ const appActions = app(
           },
         };
       },
-      newUserFormSubmit: newUser => state => actions => {
-        fetch(
-          `createUser/?name=${newUser.name}&email=${newUser.email}`
-        ).then(response => {
+      newUserFormSubmit: ({ name, email }) => state => actions => {
+        fetch('/users', {
+          method: 'POST',
+          body: JSON.stringify({ name, email }),
+          headers: new Headers({
+            'Content-Type': 'application/json',
+          }),
+        }).then(response => {
           if (!response.ok) {
             actions.setMessage('error registering');
           }
@@ -87,7 +91,13 @@ const appActions = app(
         return { view: { name, payload } };
       },
       login: ({ email, token }) => state => actions => {
-        fetch(`loginUser/?email=${email}&token=${token}`)
+        fetch('/authenticate', {
+          method: 'POST',
+          body: JSON.stringify({ email, token }),
+          headers: new Headers({
+            'Content-Type': 'application/json',
+          }),
+        })
           .then(r => r.json())
           .then(r => {
             if (r.success) {
@@ -136,26 +146,26 @@ const appActions = app(
         case 'player':
           return LayoutMixin(
             [
-            Player({
-              player: find(state.players, { _id: state.view.payload }),
-              setView: actions.setView,
-              players: state.players,
-            }),
-            Game({
-              players: state.players,
-              player: find(state.players, { _id: state.view.payload }), 
-              gameFormChange: actions.gameFormChange,
-              game: state.game,
-              gameFormSubmit: actions.gameFormSubmit,
-              setMessage: actions.setMessage,
-            })
-          ],
+              Player({
+                player: find(state.players, { _id: state.view.payload }),
+                setView: actions.setView,
+                players: state.players,
+              }),
+              Game({
+                players: state.players,
+                player: find(state.players, { _id: state.view.payload }),
+                gameFormChange: actions.gameFormChange,
+                game: state.game,
+                gameFormSubmit: actions.gameFormSubmit,
+                setMessage: actions.setMessage,
+              }),
+            ],
             defaultLayoutActions
           );
         case 'overview':
         default:
           return LayoutMixin(
-            Leaderboard({ state, actions}),
+            Leaderboard({ state, actions }),
             defaultLayoutActions
           );
       }
