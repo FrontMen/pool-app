@@ -2,6 +2,10 @@ import { h } from 'hyperapp';
 import { orderBy, find } from 'lodash';
 import { Game } from './Game';
 
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 export const Player = ({ state, actions, player }) => {
   const { players, view, user } = state;
   const { setView, setMessage, game } = actions;
@@ -17,8 +21,9 @@ export const Player = ({ state, actions, player }) => {
             />
           </div>
 
-          <h3>
-            {player.name} - {player.score}
+          <h3 class="text-center">
+            {capitalizeFirstLetter(player.name)}{' '}
+            <span class="badge badge-warning">{player.score}</span>
           </h3>
           <ul class="list-group">
             {player.matches ? (

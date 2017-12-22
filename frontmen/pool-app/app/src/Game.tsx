@@ -20,7 +20,14 @@ export const Game = ({
         <h3>Game</h3>
         <div class="form-group">
           <label for="playerSelect">Speler</label>
-          <input type="text" name="player" value={player.name} disabled />
+          <input
+            type="text"
+            id="playerSelect"
+            class="form-control"
+            name="player"
+            value={player.name}
+            disabled
+          />
           {/* <select id="playerSelect" name="player" class="form-control">
             <option disabled selected={!game.player1 || !game.player1.name}>
               Selecteer
