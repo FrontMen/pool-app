@@ -1,5 +1,5 @@
 {
   "verbose": true,
-  "ignore": ["app/**", "node_modules", "static"],
+  "ignore": ["app", "static"],
   "watch": ["functions"]
 }

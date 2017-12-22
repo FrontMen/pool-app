@@ -16,7 +16,7 @@ services:
       - mongodb
     ports: 
       - 8170:8170
-    command: "./node_modules/.bin/nodemon \"node index.js\""
+    command: "./node_modules/.bin/nodemon index.js"
   mongodb:
     image: mongo
     ports:
