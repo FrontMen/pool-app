@@ -1,6 +1,6 @@
 import { h } from 'hyperapp';
-import { Filter } from './filter';
-import { NewPlayerForm } from './newPlayerForm';
+import { Filter } from './components/filter';
+import { NewPlayerForm } from './components/newPlayerForm';
 
 export const Leaderboard = ({ state, actions }) => (
   <div class="row" oncreate={actions.fetchGames}>
