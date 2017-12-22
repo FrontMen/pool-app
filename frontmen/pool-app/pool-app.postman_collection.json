@@ -28,6 +28,28 @@
 			"response": []
 		},
 		{
+			"name": "GetUser",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8170/users/5a3d069f559f2100af069a50",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8170",
+					"path": [
+						"users",
+						"5a3d069f559f2100af069a50"
+					]
+				},
+				"description": "Get user by id"
+			},
+			"response": []
+		},
+		{
 			"name": "createUser",
 			"request": {
 				"method": "POST",
@@ -53,6 +75,36 @@
 					]
 				},
 				"description": "get a list of all users"
+			},
+			"response": []
+		},
+		{
+			"name": "updateUser",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"lasseiscool\"}"
+				},
+				"url": {
+					"raw": "http://localhost:8170/users/5a3d069f559f2100af069a50",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8170",
+					"path": [
+						"users",
+						"5a3d069f559f2100af069a50"
+					]
+				},
+				"description": "update user by id"
 			},
 			"response": []
 		},
