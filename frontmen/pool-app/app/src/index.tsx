@@ -12,22 +12,25 @@ import { ReduxDevTools } from './application/ReduxDevTools';
 import { Player } from './Player';
 import { LoginView } from './Login';
 import { LayoutMixin } from './application/Layout';
+const initialState = {
+  players: [],
+  game: { player1: '', win: '', player2: '' },
+  messages: [],
+  newUser: { name: '', email: '' },
+  view: {
+    name: 'login',
+    payload: {},
+  },
+  showNewPlayer: false,
+  competitions: ['overall', 'frontmen', 'jpoint'] /* should be ENUM */,
+  filter: 'overall',
+};
 
 // Views & Actions
 const appActions = app(
   {
     actions: {
-      stateInit: () => ({
-        players: [],
-        game: { player1: '', win: '', player2: '' },
-        messages: [],
-        newUser: { name: '', email: '' },
-        view: {
-          name: 'login',
-          payload: {},
-        },
-        showNewPlayer: false,
-      }),
+      stateInit: () => initialState,
       fetchGames: _ => state => actions => {
         fetch('users/')
           .then(response => response.json())
@@ -49,6 +52,9 @@ const appActions = app(
       setPlayers: players => ({
         players: orderBy(players, ['score'], ['desc']),
       }),
+      setFilter: filter => {
+        return { filter };
+      },
       gameFormChange: payload => {
         return {
           game: {

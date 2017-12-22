@@ -1,4 +1,5 @@
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
 }
@@ -25,7 +26,12 @@ body {
 .header {
   background: #04abed;
   background: -moz-linear-gradient(-45deg, #04abed 0%, #5f6db1 100%);
-  background: -webkit-gradient(left top, right bottom, color-stop(0%, #04abed), color-stop(100%, #5f6db1));
+  background: -webkit-gradient(
+    left top,
+    right bottom,
+    color-stop(0%, #04abed),
+    color-stop(100%, #5f6db1)
+  );
   background: -webkit-linear-gradient(-45deg, #04abed 0%, #5f6db1 100%);
   background: -o-linear-gradient(-45deg, #04abed 0%, #5f6db1 100%);
   background: -ms-linear-gradient(-45deg, #04abed 0%, #5f6db1 100%);
@@ -102,6 +108,7 @@ body {
 }
 .filters__item {
   padding: 6px 18px;
+  cursor: pointer;
 }
 .filters__item--active {
   font-weight: 400;
@@ -109,7 +116,12 @@ body {
   color: #fff;
   background: #04abed;
   background: -moz-linear-gradient(-45deg, #04abed 0%, #5f6db1 100%);
-  background: -webkit-gradient(left top, right bottom, color-stop(0%, #04abed), color-stop(100%, #5f6db1));
+  background: -webkit-gradient(
+    left top,
+    right bottom,
+    color-stop(0%, #04abed),
+    color-stop(100%, #5f6db1)
+  );
   background: -webkit-linear-gradient(-45deg, #04abed 0%, #5f6db1 100%);
   background: -o-linear-gradient(-45deg, #04abed 0%, #5f6db1 100%);
   background: -ms-linear-gradient(-45deg, #04abed 0%, #5f6db1 100%);
