@@ -8,7 +8,7 @@ const allowedDomains = ['frontmen.nl', 'jpoint.nl', 'detesters.nl'];
 /**
  * @returns {any}
  */
-module.exports = ({ name, email }, callback) => {
+module.exports = ({ name, email, sendmail = true }, callback) => {
   if (!name || !email) {
     return callback('', 'Cannot Register; missing parameters');
   }
@@ -30,17 +30,17 @@ module.exports = ({ name, email }, callback) => {
     otpSecret: secret.base32,
   };
 
-  return connectDb(db => createUser(db, { user, secret }, callback));
+  return connectDb(db => createUser(db, { user, secret, sendmail }, callback));
 };
 
-const createUser = (db, { user, secret }, callback) => {
+const createUser = (db, { user, secret, sendmail }, callback) => {
   // db.collection('users').createIndex({ name: 1 }, { unique: true });
   db.collection('users').insertOne(user, (error, result) => {
     if (error) {
       console.log(error);
       return callback(null, error);
     }
-    sendCreateUserEmail({ email: user.email, secret });
+    sendmail && sendCreateUserEmail({ email: user.email, secret });
     return callback(null, result.insertedId);
   });
 };

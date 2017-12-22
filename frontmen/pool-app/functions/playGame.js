@@ -72,10 +72,10 @@ const playGame = (db, { player1, win, player2 }, callback) => {
 var calculateNewElo = (p1score, win, p2score) => {
   var expectedScoreA = elo.getExpected(p1score, p2score);
   var expectedScoreB = elo.getExpected(p2score, p1score);
-
+  const result = win ? 1 : 0;
   //update score, 1 if won 0 if lost
-  p1score = elo.updateRating(expectedScoreA, win, p1score);
-  p2score = elo.updateRating(expectedScoreB, !win, p2score);
+  p1score = elo.updateRating(expectedScoreA, result, p1score);
+  p2score = elo.updateRating(expectedScoreB, !result, p2score);
 
   return { p1score, p2score };
 };

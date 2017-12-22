@@ -1,0 +1,127 @@
+{
+	"info": {
+		"name": "pool-app",
+		"_postman_id": "94e916cc-0960-56bf-105a-72f3b01d2fef",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "getUsers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8170/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8170",
+					"path": [
+						"users"
+					]
+				},
+				"description": "Get a list of all users"
+			},
+			"response": []
+		},
+		{
+			"name": "createUser",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"hein\",\n\t\"email\":\"hein@frontmen.nl\",\n\t\"sendmail\": false\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8170/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8170",
+					"path": [
+						"users"
+					]
+				},
+				"description": "get a list of all users"
+			},
+			"response": []
+		},
+		{
+			"name": "authenticate",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\": \"lasse@frontmen.nl\", \"token\": \"123\"}"
+				},
+				"url": {
+					"raw": "http://localhost:8170/authenticate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8170",
+					"path": [
+						"authenticate"
+					]
+				},
+				"description": "Authenticate with user params"
+			},
+			"response": []
+		},
+		{
+			"name": "PlayGame",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8170/playgame?player1=Lasse&win=true&player2=jan",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8170",
+					"path": [
+						"playgame"
+					],
+					"query": [
+						{
+							"key": "player1",
+							"value": "Lasse",
+							"equals": true
+						},
+						{
+							"key": "win",
+							"value": "true",
+							"equals": true
+						},
+						{
+							"key": "player2",
+							"value": "jan",
+							"equals": true
+						}
+					]
+				},
+				"description": "Post game params"
+			},
+			"response": []
+		}
+	]
+}
