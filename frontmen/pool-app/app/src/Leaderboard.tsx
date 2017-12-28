@@ -1,8 +1,15 @@
 import { h } from 'hyperapp';
 import { Filter } from './components/filter';
-import { NewPlayerForm } from './components/newPlayerForm';
+import { NewPlayerForm } from './components/NewPlayerForm';
+import { competitions, AppActions, AppState } from './index';
 
-export const Leaderboard = ({ state, actions }) => (
+export const Leaderboard = ({
+  state,
+  actions,
+}: {
+  state: AppState;
+  actions: AppActions;
+}) => (
   <div class="row" oncreate={actions.fetchGames}>
     <div class="col-12">
       <div class="header">
@@ -52,7 +59,7 @@ export type player = {
 };
 
 const getPlayersByFilter = (players: player[], filter: string) => {
-  return filter === 'overall'
+  return filter === competitions.overall
     ? players
     : players.filter(p => p.email.indexOf(filter) > -1);
 };
@@ -112,8 +119,4 @@ export const List = ({
       )}
     </ul>
   );
-};
-
-const getBadgeClass = idx => {
-  return `badge ${idx === 0 ? 'badge-warning' : 'badge-info'}`;
 };

@@ -1,5 +1,7 @@
 import { h } from 'hyperapp';
 
+export const setFilter = filter => ({ filter });
+
 export const Filter = ({ options, selected, setFilter }) => {
   return (
     <div class="filters">
