@@ -1,12 +1,10 @@
 version: "2"
 services:
   node:
-    image: "registry.wieisalbert.nu/alber70g/frontmen-pool-app:0.0.8"
+    image: "registry.wieisalbert.nu/alber70g/frontmen-pool-app:0.0.11"
     links:
       - mongodb
     depends_on:
       - mongodb
-    ports: 
-      - 8170:8170
   mongodb:
     image: mongo
