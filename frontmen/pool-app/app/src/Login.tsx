@@ -1,13 +1,19 @@
-import { h } from 'hyperapp';
+import { h, MyAction } from 'hyperapp';
+import { AppActions, AppState } from '.';
 
-export const LoginView = ({ setView, login, setMessage }) => {
+export const LoginView = ({
+  setView,
+  setEmailValue,
+  login,
+  register,
+  setMessage,
+}) => {
   return (
     <div class="row">
       <div class="col-12">
         <h3>Login</h3>
         <form
-          onchange="{}"
-          onsubmit={e => {
+          onsubmit={(e) => {
             e.preventDefault();
             if (e.target.email.value && e.target.token.value) {
               login({
@@ -27,6 +33,7 @@ export const LoginView = ({ setView, login, setMessage }) => {
               name="name"
               type="text"
               class="form-control"
+              onkeyup={setEmailValue}
             />
           </div>
           <div class="form-group">
@@ -40,18 +47,33 @@ export const LoginView = ({ setView, login, setMessage }) => {
             />
           </div>
           <div class="form-group">
-            <input
-              type="submit"
-              value="Login"
-              class="btn btn-block btn-primary"
-            />
+            <div className="row">
+              <div className="col-6">
+                <input
+                  type="submit"
+                  value="Login"
+                  class="btn btn-block btn-primary"
+                />
+              </div>
+              <div className="col-6">
+                <input
+                  type="button"
+                  value="Register"
+                  class="btn btn-block btn-secondary"
+                  onclick={(e) => {
+                    e.preventDefault();
+                    register(e);
+                  }}
+                />
+              </div>
+            </div>
           </div>
         </form>
       </div>
     </div>
   );
 };
-export const login = ({ email, token }) => state => actions => {
+export const login = ({ email, token }) => (state) => (actions) => {
   fetch('/authenticate', {
     method: 'POST',
     body: JSON.stringify({ email, token }),
@@ -59,8 +81,8 @@ export const login = ({ email, token }) => state => actions => {
       'Content-Type': 'application/json',
     }),
   })
-    .then(r => r.json())
-    .then(r => {
+    .then((r) => r.json())
+    .then((r) => {
       if (r.success) {
         localStorage.setItem('pool-app-jwt', r.token);
         actions.setJwt(r.token);
@@ -70,5 +92,37 @@ export const login = ({ email, token }) => state => actions => {
         actions.setMessage('Login incorrect');
       }
     })
-    .catch(err => actions.setMessage('Login incorrect'));
+    .catch((err) => actions.setMessage('Login incorrect'));
+};
+
+export const setEmailValue: MyAction<AppState, AppActions> = (el) => ({
+  login: {
+    email: el.target.value.toLowerCase(),
+  },
+});
+
+export const register: MyAction<AppState, AppActions> = () => (state) => (
+  actions,
+) => {
+  fetch('/users', {
+    method: 'POST',
+    body: JSON.stringify({
+      email: state.login.email,
+      name: state.login.email.split('@')[0],
+    }),
+    headers: new Headers({
+      'Content-Type': 'application/json',
+    }),
+  })
+    .then((r) => r.json())
+    .then((r) => {
+      if (r.length === 24) {
+        actions.setMessage(
+          "You've been registered. You'll receive an email shortly",
+        );
+      } else {
+        actions.setMessage('Login incorrect');
+      }
+    })
+    .catch((err) => actions.setMessage('Login incorrect'));
 };

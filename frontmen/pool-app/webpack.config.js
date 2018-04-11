@@ -2,7 +2,6 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   entry: './app/src/index.tsx',
-  watch: true,
   watchOptions: {
     aggregateTimeout: 100,
     poll: 500,
@@ -30,5 +29,5 @@ module.exports = {
       // { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
     ],
   },
-  plugins: [new UglifyJSPlugin()],
+  // plugins: [new UglifyJSPlugin()],
 };

@@ -8,12 +8,16 @@
     "url": "ssh://git@github.com:FrontMen/stdlib.git"
   },
   "scripts": {
-    "start": "DEBUG=mongo:* concurrently \"npm run start:docker\" \"npm run build\"",
+    "start": "DEBUG=mongo:* concurrently \"npm run start:docker\" \"npm run build:watch\"",
     "start:docker": "docker-compose -f docker-compose-dev.yaml up",
     "stop": "docker-compose -f docker-compose-dev.yaml down",
     "build": "webpack",
+    "build:watch": "webpack --watch",
     "docker:release": "node ./scripts/docker-build-release.js"
   },
+  "pre-commit": [
+    "build"
+  ],
   "dependencies": {
     "axios": "^0.17.1",
     "body-parser": "^1.18.2",
@@ -59,6 +63,7 @@
     "fuse-box-typechecker": "^2.6.3",
     "lib.cli": "^4.0.1",
     "nodemon": "^1.14.1",
+    "pre-commit": "^1.2.2",
     "pre-push": "^0.1.1",
     "source-map-loader": "^0.2.3",
     "ts-loader": "^3.2.0",

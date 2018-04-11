@@ -30,7 +30,9 @@ module.exports = ({ name, email, sendmail = true }, callback) => {
     otpSecret: secret.base32,
   };
 
-  return connectDb(db => createUser(db, { user, secret, sendmail }, callback));
+  return connectDb((db) =>
+    createUser(db, { user, secret, sendmail }, callback),
+  );
 };
 
 const createUser = (db, { user, secret, sendmail }, callback) => {
@@ -56,10 +58,10 @@ const sendCreateUserEmail = ({ email, secret }) => {
         <p>
           Welkom in FrontMen Pool Cafe <br />
           <br />
-          https://frontmen.stdlib.com/pool-app/
+          http://pool-app.frontmen.nl
           De One Time Passcode voor Google Authenticator om in te loggen: <br />
           <img src="https://api.qrserver.com/v1/create-qr-code/?data=${encodeURI(
-            secret.otpauth_url
+            secret.otpauth_url,
           )}" /> <br />
           Token: <a href="${secret.otpauth_url}">${secret.base32}</a> <br />
           Succes! <br />

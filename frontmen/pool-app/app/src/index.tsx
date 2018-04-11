@@ -10,7 +10,7 @@ import { Leaderboard } from './Leaderboard';
 import { Game, gameFormSubmit, gameFormChange } from './Game';
 import { ReduxDevTools } from './application/ReduxDevTools';
 import { Player } from './Player';
-import { LoginView, login } from './Login';
+import { LoginView, setEmailValue, login, register } from './Login';
 import { LayoutMixin } from './application/Layout';
 import { formSubmit, formChange } from './components/NewPlayerForm';
 import { setMessage, removeMessage } from './Messages';
@@ -39,8 +39,10 @@ export type AppActions = {
   removeMessage: MyAction<AppState, AppActions>;
   setView: MyAction<AppState, AppActions>;
   login: MyAction<AppState, AppActions>;
+  register: MyAction<AppState, AppActions>;
   setJwt: MyAction<AppState, AppActions>;
   toggleShowNewPlayer: MyAction<AppState, AppActions>;
+  setEmailValue: MyAction<AppState, AppActions>;
 };
 export type AppState = {
   players: API.User[];
@@ -55,6 +57,7 @@ export type AppState = {
   competitions: competitions[];
   filter: competitions;
   user: API.User;
+  login: { email: string }
 };
 
 const initialState: AppState = {
@@ -74,6 +77,9 @@ const initialState: AppState = {
   ],
   filter: competitions.overall,
   user: null,
+  login: {
+    email: '',
+  }
 };
 
 const actions: AppActions = {
@@ -106,9 +112,11 @@ const actions: AppActions = {
   setMessage,
   removeMessage,
   login,
+  register,
+  setEmailValue,
 };
 
-const view = (state: any) => (actions: any) => {
+const view = (state: any) => (actions: AppActions) => {
   debug(
     'navigating to %s with payload %o',
     state.view.name,
@@ -124,7 +132,9 @@ const view = (state: any) => (actions: any) => {
     return LayoutMixin(
       <LoginView
         setView={actions.setView}
+        setEmailValue={actions.setEmailValue}
         login={actions.login}
+        register={actions.register}
         setMessage={actions.setMessage}
       />,
       defaultLayoutActions
@@ -156,6 +166,6 @@ const appActions = app(
   document.getElementById('app')
 );
 
-appActions.stateInit();
+appActions.stateInit(null);
 const token = localStorage.getItem('pool-app-jwt');
 if (token) appActions.setJwt(token);

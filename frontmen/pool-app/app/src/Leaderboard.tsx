@@ -40,8 +40,8 @@ export const Leaderboard = ({
       <List
         players={getPlayersByFilter(state.players, state.filter)}
         newUser={state.newUser}
-        newUserFormChange={actions.newUserFormChange}
-        newUserFormSubmit={actions.newUserFormSubmit}
+        newUserFormChange={actions.newUser.formChange}
+        newUserFormSubmit={actions.newUser.formSubmit}
         setView={actions.setView}
         showNewPlayer={state.showNewPlayer}
         toggleShowNewPlayer={actions.toggleShowNewPlayer}
