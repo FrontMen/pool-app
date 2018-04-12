@@ -26,3 +26,14 @@ services:
       - MONGO_LOG_DIR=/dev/null
     volumes:
       - ./data/db:/data/db
+  adminmongo: 
+    image: mongo-express:latest
+    ports: 
+      - "8081:8081"
+    links:
+      - mongodb:mongo
+    depends_on:
+      - mongodb
+    environment: 
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=admin

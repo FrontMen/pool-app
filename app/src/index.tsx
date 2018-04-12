@@ -43,6 +43,7 @@ export type AppActions = {
   setJwt: MyAction<AppState, AppActions>;
   toggleShowNewPlayer: MyAction<AppState, AppActions>;
   setEmailValue: MyAction<AppState, AppActions>;
+  onHashChange: MyAction<AppState, AppActions>;
 };
 export type AppState = {
   players: API.User[];
@@ -51,13 +52,13 @@ export type AppState = {
   newUser: { name: string; email: string };
   view: {
     name: 'login' | 'leaderboard' | 'game';
-    payload: any;
+    payload?: any;
   };
   showNewPlayer: boolean;
   competitions: competitions[];
   filter: competitions;
   user: API.User;
-  login: { email: string }
+  login: { email: string };
 };
 
 const initialState: AppState = {
@@ -79,24 +80,34 @@ const initialState: AppState = {
   user: null,
   login: {
     email: '',
-  }
+  },
+};
+
+const onHashChange: MyAction<AppState, AppActions> = (e) => (state) => (
+  actions,
+) => {
+  let viewName = window.location.hash.split('#')[1];
+  return { view: { name: viewName as any, payload: state.view.payload } };
 };
 
 const actions: AppActions = {
   stateInit: () => initialState,
-  fetchGames: _ => state => actions => {
-    fetch('users/').then(response => response.json()).then(actions.setPlayers);
+  fetchGames: (_) => (state) => (actions) => {
+    fetch('users/')
+      .then((response) => response.json())
+      .then(actions.setPlayers);
   },
-  setPlayers: players => ({
+  setPlayers: (players) => ({
     players: orderBy(players, ['score'], ['desc']),
   }),
   setView: ({ name, payload }) => {
+    location.hash = name;
     return { view: { name, payload } };
   },
-  setJwt: token => {
+  setJwt: (token) => {
     return { user: decode(token), token: token };
   },
-  toggleShowNewPlayer: _ => prevState => ({
+  toggleShowNewPlayer: (_) => (prevState) => ({
     newUser: { name: '', email: '' },
     showNewPlayer: !prevState.showNewPlayer,
   }),
@@ -114,13 +125,14 @@ const actions: AppActions = {
   login,
   register,
   setEmailValue,
+  onHashChange,
 };
 
 const view = (state: any) => (actions: AppActions) => {
   debug(
     'navigating to %s with payload %o',
     state.view.name,
-    state.view.payload
+    state.view.payload,
   );
   const defaultLayoutActions = {
     setView: actions.setView,
@@ -137,8 +149,12 @@ const view = (state: any) => (actions: AppActions) => {
         register={actions.register}
         setMessage={actions.setMessage}
       />,
-      defaultLayoutActions
+      defaultLayoutActions,
     );
+  }
+
+  if (state.view.name === 'player' && !state.view.payload.length) {
+    window.location.hash = 'overview'
   }
 
   switch (state.view.name) {
@@ -149,7 +165,7 @@ const view = (state: any) => (actions: AppActions) => {
           actions,
           player: find(state.players, { _id: state.view.payload }),
         }),
-        defaultLayoutActions
+        defaultLayoutActions,
       );
     case 'overview':
     default:
@@ -163,9 +179,14 @@ const appActions = app(
     actions: actions,
     view: view,
   },
-  document.getElementById('app')
+  document.getElementById('app'),
 );
 
 appActions.stateInit(null);
 const token = localStorage.getItem('pool-app-jwt');
 if (token) appActions.setJwt(token);
+
+// start initial route
+appActions.onHashChange({});
+
+window.addEventListener('hashchange', appActions.onHashChange);

@@ -9,8 +9,8 @@
   },
   "scripts": {
     "start": "DEBUG=mongo:* concurrently \"npm run start:docker\" \"npm run build:watch\"",
-    "start:docker": "docker-compose -f docker-compose-dev.yaml up",
-    "stop": "docker-compose -f docker-compose-dev.yaml down",
+    "start:docker": "docker-compose -f docker-compose-dev.yaml start",
+    "stop": "docker-compose -f docker-compose-dev.yaml stop",
     "build": "webpack",
     "build:watch": "webpack --watch",
     "docker:release": "node ./scripts/docker-build-release.js"
@@ -19,6 +19,7 @@
     "build"
   ],
   "dependencies": {
+    "admin-mongo": "0.0.23",
     "axios": "^0.17.1",
     "body-parser": "^1.18.2",
     "cross-env": "^5.1.1",

@@ -436,18 +436,25 @@ var initialState = {
     user: null,
     login: {
         email: '',
-    }
+    },
 };
+var onHashChange = function (e) { return function (state) { return function (actions) {
+    var viewName = window.location.hash.split('#')[1];
+    return { view: { name: viewName, payload: state.view.payload } };
+}; }; };
 var actions = {
     stateInit: function () { return initialState; },
     fetchGames: function (_) { return function (state) { return function (actions) {
-        fetch('users/').then(function (response) { return response.json(); }).then(actions.setPlayers);
+        fetch('users/')
+            .then(function (response) { return response.json(); })
+            .then(actions.setPlayers);
     }; }; },
     setPlayers: function (players) { return ({
         players: lodash_1.orderBy(players, ['score'], ['desc']),
     }); },
     setView: function (_a) {
         var name = _a.name, payload = _a.payload;
+        location.hash = name;
         return { view: { name: name, payload: payload } };
     },
     setJwt: function (token) {
@@ -471,6 +478,7 @@ var actions = {
     login: Login_1.login,
     register: Login_1.register,
     setEmailValue: Login_1.setEmailValue,
+    onHashChange: onHashChange,
 };
 var view = function (state) { return function (actions) {
     debug('navigating to %s with payload %o', state.view.name, state.view.payload);
@@ -481,6 +489,9 @@ var view = function (state) { return function (actions) {
     if (!state.user || state.user.exp < new Date().getTime() / 1000) {
         debug('user not authenticated or token expired');
         return Layout_1.LayoutMixin(hyperapp_1.h(Login_1.LoginView, { setView: actions.setView, setEmailValue: actions.setEmailValue, login: actions.login, register: actions.register, setMessage: actions.setMessage }), defaultLayoutActions);
+    }
+    if (state.view.name === 'player' && !state.view.payload.length) {
+        window.location.hash = 'overview';
     }
     switch (state.view.name) {
         case 'player':
@@ -503,6 +514,9 @@ appActions.stateInit(null);
 var token = localStorage.getItem('pool-app-jwt');
 if (token)
     appActions.setJwt(token);
+// start initial route
+appActions.onHashChange({});
+window.addEventListener('hashchange', appActions.onHashChange);
 
 
 /***/ }),
