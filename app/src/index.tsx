@@ -41,6 +41,7 @@ export type AppActions = {
   login: MyAction<AppState, AppActions>;
   register: MyAction<AppState, AppActions>;
   setJwt: MyAction<AppState, AppActions>;
+  deleteJwt: MyAction<AppState, AppActions>;
   toggleShowNewPlayer: MyAction<AppState, AppActions>;
   setEmailValue: MyAction<AppState, AppActions>;
   onHashChange: MyAction<AppState, AppActions>;
@@ -107,6 +108,10 @@ const actions: AppActions = {
   setJwt: (token) => {
     return { user: decode(token), token: token };
   },
+  deleteJwt: () => {
+    localStorage.removeItem('pool-app-jwt');
+    return { user: null, token: null };
+  },
   toggleShowNewPlayer: (_) => (prevState) => ({
     newUser: { name: '', email: '' },
     showNewPlayer: !prevState.showNewPlayer,
@@ -136,6 +141,7 @@ const view = (state: any) => (actions: AppActions) => {
   );
   const defaultLayoutActions = {
     setView: actions.setView,
+    deleteJwt: actions.deleteJwt,
     state,
   };
 
@@ -154,7 +160,7 @@ const view = (state: any) => (actions: AppActions) => {
   }
 
   if (state.view.name === 'player' && !state.view.payload.length) {
-    window.location.hash = 'overview'
+    window.location.hash = 'overview';
   }
 
   switch (state.view.name) {

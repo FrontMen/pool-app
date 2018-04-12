@@ -460,6 +460,10 @@ var actions = {
     setJwt: function (token) {
         return { user: decode(token), token: token };
     },
+    deleteJwt: function () {
+        localStorage.removeItem('pool-app-jwt');
+        return { user: null, token: null };
+    },
     toggleShowNewPlayer: function (_) { return function (prevState) { return ({
         newUser: { name: '', email: '' },
         showNewPlayer: !prevState.showNewPlayer,
@@ -484,6 +488,7 @@ var view = function (state) { return function (actions) {
     debug('navigating to %s with payload %o', state.view.name, state.view.payload);
     var defaultLayoutActions = {
         setView: actions.setView,
+        deleteJwt: actions.deleteJwt,
         state: state,
     };
     if (!state.user || state.user.exp < new Date().getTime() / 1000) {
@@ -18945,14 +18950,19 @@ var hyperapp_1 = __webpack_require__(0);
 var ReduxDevTools_1 = __webpack_require__(20);
 var Messages_1 = __webpack_require__(7);
 exports.LayoutMixin = function (View, _a) {
-    var setView = _a.setView, state = _a.state;
+    var setView = _a.setView, state = _a.state, deleteJwt = _a.deleteJwt;
     return (hyperapp_1.h("div", null,
         hyperapp_1.h(ReduxDevTools_1.ReduxDevTools, { state: state }),
         hyperapp_1.h("nav", { class: "navbar navbar-dark bg-dark" },
             hyperapp_1.h("a", { class: "navbar-brand", href: "#", onclick: function (ev) {
                     ev.preventDefault();
                     setView({ name: 'overview' });
-                } }, "FrontMen Pool Cafe")),
+                } }, "FrontMen Pool Cafe"),
+            hyperapp_1.h("ul", { class: "nav navbar-nav navbar-right" },
+                hyperapp_1.h("li", null,
+                    hyperapp_1.h("a", { class: "nav-link", href: "#", onclick: deleteJwt },
+                        hyperapp_1.h("span", { class: "glyphicon glyphicon-user" }),
+                        " Logout")))),
         hyperapp_1.h("div", { id: "app", class: "container" },
             hyperapp_1.h(Messages_1.Messages, { messages: state.messages }),
             View)));
