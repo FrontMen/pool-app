@@ -18958,11 +18958,11 @@ exports.LayoutMixin = function (View, _a) {
                     ev.preventDefault();
                     setView({ name: 'overview' });
                 } }, "FrontMen Pool Cafe"),
-            hyperapp_1.h("ul", { class: "nav navbar-nav navbar-right" },
+            state.token ? (hyperapp_1.h("ul", { class: "nav navbar-nav navbar-right" },
                 hyperapp_1.h("li", null,
                     hyperapp_1.h("a", { class: "nav-link", href: "#", onclick: deleteJwt },
                         hyperapp_1.h("span", { class: "glyphicon glyphicon-user" }),
-                        " Logout")))),
+                        " Logout")))) : ('')),
         hyperapp_1.h("div", { id: "app", class: "container" },
             hyperapp_1.h(Messages_1.Messages, { messages: state.messages }),
             View)));

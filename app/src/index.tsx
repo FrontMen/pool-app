@@ -59,6 +59,7 @@ export type AppState = {
   competitions: competitions[];
   filter: competitions;
   user: API.User;
+  token?: string;
   login: { email: string };
 };
 
