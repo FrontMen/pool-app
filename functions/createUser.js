@@ -3,7 +3,7 @@ const lib = require('lib');
 const connectDb = require('../lib/connectDb');
 const speakeasy = require('speakeasy');
 
-const allowedDomains = ['frontmen.nl', 'jpoint.nl', 'detesters.nl'];
+const allowedDomains = ['frontmen.nl', 'jpoint.nl', 'detesters.nl', 'up-front.nl'];
 
 /**
  * @returns {any}
